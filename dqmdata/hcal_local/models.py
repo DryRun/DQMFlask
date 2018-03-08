@@ -101,7 +101,7 @@ class SubdetIEtaQuantity(object):
 
 
 # Data models
-class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
+class PedestalMean_Run_Channel(db.Model, RunQuantity, ChannelQuantity):
 	__tablename__ = 'pedestal_mean_run_channel'
 	id            = db.Column(db.Integer, primary_key=True)
 	pedestal_mean = db.Column(db.Float)
