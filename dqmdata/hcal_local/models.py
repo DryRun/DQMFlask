@@ -1,4 +1,5 @@
 from dqmdata import db
+from dqmdata.hcal_local.dqmio import load_dqm_object
 from sqlalchemy.ext.declarative import declared_attr
 
 # Utility models
@@ -106,13 +107,13 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 	
 	# Extract data from DQM histogram
 	def extract(self, run, emap_version="2017J"):
-		# Get DQM file
-		dqm_file = dqmio.get_dqm_file(run, dqm_server="hcal-online")
+		# Get data
+		dqm_data = load_dqm_object(run, "PEDESTAL/Commissioning2018/DQMIO", "Hcal/PedestalTask/Mean/depth")
 
 		# Get histograms
 		hist_pedestal_mean = {}
 		for depth in range(1, 8):
-			hist_pedestal_mean[depth] = dqm_file.Get("DQMData/Run {}/Hcal/Run summary/PedestalTask/Mean/depth/depth{}".format(run, depth))
+			hist_pedestal_mean[depth] = dqm_data["depth{}".format(depth)]
 		
 		# Extract all pedestals from the DQM histograms here
 		channels = Channel.query.filter(Channel.emap_version==emap_version)
