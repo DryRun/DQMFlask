@@ -15,7 +15,8 @@ def load_dqm_object(run, dataset, rootpath, force_download=False):
 	if not os.path.isfile(cachepath) or force_download:
 		url = "https://cmsweb.cern.ch/dqm/hcal-online/data/json/archive/{}/{}/{}".format(run, dataset, rootpath)
 		download_dqm_json_object(url, "hcal_local", run, object_name)
-
+	else:
+		print "[load_dqm_object] INFO : Loading cached DQM objects from {}".format(cachepath)
 	with open(cachepath, 'r') as f:
 		json_data = pickle.load(f)
 	root_data = convert_json_to_root(json_data)
