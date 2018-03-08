@@ -100,11 +100,6 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 	id            = db.Column(db.Integer, primary_key=True)
 	pedestal_mean = db.Column(db.Float)
 
-	def __init__(self, pedestal_mean, run, channel_id):
-		self.pedestal_mean = pedestal_mean
-		self.run = run
-		self.channel = channel_id
-	
 	def __repr__(self):
 		return "id {}, run {}, channel {} => {}".format(self.id, self.run, self.channel, self.pedestal_mean)
 		return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
