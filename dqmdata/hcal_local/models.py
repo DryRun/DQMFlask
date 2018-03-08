@@ -106,6 +106,7 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 
 	# Extract data from DQM histogram
 	def extract(self, run, emap_version="2017J"):
+		print "[PedestalMean_Run_Channel::extract] Extracting for run {}".format(run)
 		# Get data
 		if emap_version == "2017J":
 			dataset = "PEDESTAL/Commissioning2016/DQMIO"
@@ -124,6 +125,7 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 		for channel in channels:
 			xbin, ybin = hcaldqmfunctions.detid_to_histbins(channel.subdet, channel.ieta, channel.iphi, channel.depth)
 			this_reading = PedestalMean_Run_Channel(hist_pedestal_mean[channel.depth].GetBinContent(xbin, ybin), run, channel.id)
+			print this_reading
 			this_reading.save()
 
 
