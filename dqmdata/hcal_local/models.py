@@ -42,7 +42,7 @@ class RunQuantity(object):
 class ChannelQuantity(object):
 	@declared_attr
 	def channel_id(cls):
-		return db.Column(db.Integer, db.ForeignKey("channel.id"), nullable=False)
+		return db.Column(db.Integer, db.ForeignKey("channel.id"))
 
 
 	#@declared_attr
