@@ -9,7 +9,7 @@ cache_directory = "/afs/cern.ch/user/c/cmshcaldqm/DQMFlask/cache"
 
 def convert_json_to_root(json_data):
 	return_dict = {}
-	for idx, item in enumerate(data['contents']):
+	for idx, item in enumerate(json_data['contents']):
 		if not "obj" in items.keys(): # Learn exceptions!
 			print "[convert_json_to_root] ERROR : Couldn't find key obj in ",
 			print items
