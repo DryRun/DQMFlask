@@ -13,15 +13,31 @@ def emap():
 
 
 # Custom commands
+import mmap
+def mapcount(filename):
+    f = open(filename, "r+")
+    buf = mmap.mmap(f.fileno(), 0)
+    lines = 0
+    readline = buf.readline
+    while readline():
+        lines += 1
+    return lines
+
 import click
+import math
 from dqmdata import app
 @app.cli.command(with_appcontext=True)
 @click.option('--version')
 @click.option('--path')
 def process_emap(version, path):
 	from models import Channel
+	nlines = mapcount(path)
+	print_every = int(math.floor(nlines / 20))
 	emap = open(path, 'r')
+	counter = 0
 	for line in emap:
+		if counter % print_every == 0:
+			print "On line {}/{}".format(counter, nlines)
 		if line[0] == "#":
 			continue
 		if len(line.split()) < 10:
