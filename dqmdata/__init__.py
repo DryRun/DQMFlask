@@ -13,6 +13,7 @@ app.config.from_object('config')
 # Define the database object which is imported
 # by modules and controllers
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # Sample HTTP error handling
 @app.errorhandler(404)
@@ -31,4 +32,4 @@ app.register_blueprint(hcal_local)
 
 # Build the database:
 # This will create the database file using SQLAlchemy
-db.create_all()
+#db.create_all()
