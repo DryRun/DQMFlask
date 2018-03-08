@@ -108,7 +108,8 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 	def extract(self, run, emap_version="2017J"):
 		# Get data
 		dqm_data = load_dqm_object(run, "PEDESTAL/Commissioning2018/DQMIO", "Hcal/PedestalTask/Mean/depth")
-
+		print dqm_data
+		
 		# Get histograms
 		hist_pedestal_mean = {}
 		for depth in range(1, 8):
