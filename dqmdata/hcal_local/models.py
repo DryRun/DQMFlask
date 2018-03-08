@@ -37,7 +37,7 @@ class Channel(db.Model):
 # Mixins
 class RunQuantity(object):
 	run = db.Column(db.Integer, nullable=False)
-	__abstract__ = True
+	#__abstract__ = True
 
 class ChannelQuantity(object):
 	@declared_attr
