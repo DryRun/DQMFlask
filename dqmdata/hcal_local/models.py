@@ -2,12 +2,6 @@ from dqmdata import db
 from dqmdata.hcal_local.dqmio import load_dqm_object
 from sqlalchemy.ext.declarative import declared_attr
 
-class Dummy(db.Model):
-	__tablename__ = "dummy"
-	id            = db.Column(db.Integer, primary_key=True)
-	name        = db.Column(db.String(8), nullable=False)
-
-
 # Utility models
 class Channel(db.Model):
 	__tablename__ = "channel"
@@ -111,6 +105,10 @@ class PedestalMean_Run_Channel(db.Model, RunQuantity, ChannelQuantity):
 		self.run = run
 		self.channel = channel_id
 	
+	def __repr__(self):
+		return "id {}, run {}, channel {} => {}".format(self.id, self.run, self.channel, self.pedestal_mean)
+		return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
+
 	# Extract data from DQM histogram
 	def extract(self, run, emap_version="2017J"):
 		# Get data
