@@ -19,7 +19,7 @@ migrate = Migrate(app, db)
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404
-
+ 
 # Import a module / component using its blueprint handler variable (hcal_local)
 from dqmdata.common.controllers import common as common
 from dqmdata.hcal_local.controllers import hcal_local as hcal_local
