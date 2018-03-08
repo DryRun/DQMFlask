@@ -10,13 +10,13 @@ cache_directory = "/afs/cern.ch/user/c/cmshcaldqm/DQMFlask/cache"
 def convert_json_to_root(json_data):
 	return_dict = {}
 	for idx, item in enumerate(json_data['contents']):
-		if not "obj" in items.keys(): # Learn exceptions!
+		if not "obj" in item.keys(): # Learn exceptions!
 			print "[convert_json_to_root] ERROR : Couldn't find key obj in ",
-			print items
+			print item
 			sys.exit(1)
-		if not "rootobj" in items.keys(): # Learn exceptions!
+		if not "rootobj" in item.keys(): # Learn exceptions!
 			print "[convert_json_to_root] ERROR : Couldn't find key rootobj in ",
-			print items
+			print item
 			sys.exit(1)
 
 		bit_array = array('B')
@@ -27,7 +27,7 @@ def convert_json_to_root(json_data):
 			rootType = 'TProfile'
 		elif rootType == 'TPROF2D': 
 			rootType = 'TProfile2D'
-		return_dict[items["obj"]] = tbuffer.ReadObject(eval(rootType+'.Class()'))
+		return_dict[item["obj"]] = tbuffer.ReadObject(eval(rootType+'.Class()'))
 	return return_dict
 
 # Get the cache location of a DQM object downloaded from the JSON API
