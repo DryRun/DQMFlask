@@ -49,7 +49,7 @@ class ChannelQuantity(object):
 	#def channel(cls):
 	#	return db.relationship("channel")
 
-	__abstract__ = True
+	#__abstract__ = True
 
 class SubdetQuantity(object):
 	#SUBDET_CHOICES = (
@@ -61,7 +61,7 @@ class SubdetQuantity(object):
 	#	('NA', 'Unknown'),
 	#)
 	subdet = db.Column(db.Enum('HB', 'HE', 'HEP17', 'HF', 'HO', 'NA'), name='subdet')
-	__abstract__ = True
+	#__abstract__ = True
 
 class SubdetPMQuantity(object):
 	#SUBDETPM_CHOICES = (
@@ -77,7 +77,7 @@ class SubdetPMQuantity(object):
 	#	('NA', 'Unknown'),
 	#)
 	subdetpm = db.Column(db.Enum('HBP', 'HBM', 'HEP', 'HEM', 'HEP17', 'HFP', 'HFM', 'HOP', 'HOM', 'NA'), name='subdetpm')
-	__abstract__ = True
+	#__abstract__ = True
 
 class SubdetIEtaQuantity(object):
 	#SUBDET_CHOICES = (
@@ -91,11 +91,11 @@ class SubdetIEtaQuantity(object):
 	subdet = db.Column(db.Enum('HB', 'HE', 'HEP17', 'HF', 'HO', 'NA'), name='subdet')
 	ieta = db.Column(db.SmallInteger, nullable=False)
 	depth = db.Column(db.SmallInteger, nullable=False)
-	__abstract__ = True
+	#__abstract__ = True
 
 
 # Data models
-class PedestalMean_Run_Channel(RunQuantity, db.Model): # , ChannelQuantity
+class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 	__tablename__ = 'pedestal_mean_run_channel'
 	id            = db.Column(db.Integer, primary_key=True)
 	pedestal_mean = db.Column(db.Float)
