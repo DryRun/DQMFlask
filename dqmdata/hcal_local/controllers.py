@@ -31,16 +31,14 @@ from dqmdata import app
 @click.option('--path')
 def process_emap(version, path):
 	from models import Channel
-	nlines = 0
-	with open(path, 'r') as ftmp:
-		for line in ftmp:
-			nlines += 1
+	nlines = mapcount(path)
 	print_every = int(math.floor(nlines / 20))
 	emap = open(path, 'r')
 	counter = 0
 	for line in emap:
 		if counter % print_every == 0:
 			print "On line {}/{}".format(counter, nlines)
+		counter += 1
 		if line[0] == "#":
 			continue
 		if len(line.split()) < 10:
