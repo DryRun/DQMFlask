@@ -25,3 +25,4 @@ def load_dqm_object(run, dataset, rootpath, force_download=False):
 if __name__ == "__main__":
 	# Test loading DQM object
 	print load_dqm_object(311043, "PEDESTAL/Commissioning2018/DQMIO", "Hcal/PedestalTask/Mean/depth")
+	print "Done."
