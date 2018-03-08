@@ -34,6 +34,40 @@ class Channel(db.Model):
 	def __repr__(self):
 		return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
 
+# Data models
+class PedestalMean_Run_Channel(db.Model, RunQuantity, ChannelQuantity):
+	__tablename__ = 'pedestal_mean_run_channel'
+	id            = db.Column(db.Integer, primary_key=True)
+	pedestal_mean = db.Column(db.Float)
+
+	def __init__(self, pedestal_mean, run, channel_id):
+		self.pedestal_mean = pedestal_mean
+		self.run = run
+		self.channel = channel_id
+	
+	def __repr__(self):
+		return "id {}, run {}, channel {} => {}".format(self.id, self.run, self.channel, self.pedestal_mean)
+		return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
+
+	# Extract data from DQM histogram
+	def extract(self, run, emap_version="2017J"):
+		# Get data
+		dqm_data = load_dqm_object(run, "PEDESTAL/Commissioning2018/DQMIO", "Hcal/PedestalTask/Mean/depth")
+
+		# Get histograms
+		hist_pedestal_mean = {}
+		for depth in range(1, 8):
+			hist_pedestal_mean[depth] = dqm_data["depth{}".format(depth)]
+		
+		# Extract all pedestals from the DQM histograms here
+		channels = Channel.query.filter(Channel.emap_version==emap_version)
+		for channel in channels:
+			xbin, ybin = hcaldqmfunctions.detid_to_histbins(channel.subdet, channel.ieta, channel.iphi, channel.depth)
+			this_reading = PedestalMean_Run_Channel(hist_pedestal_mean[channel.depth].GetBinContent(xbin, ybin), run, channel.id)
+			this_reading.save()
+
+
+
 # Mixins
 class RunQuantity(object):
 	run = db.Column(db.Integer, nullable=False)
@@ -92,38 +126,5 @@ class SubdetIEtaQuantity(object):
 	ieta = db.Column(db.SmallInteger, nullable=False)
 	depth = db.Column(db.SmallInteger, nullable=False)
 	__abstract__ = True
-
-
-# Data models
-class PedestalMean_Run_Channel(db.Model, RunQuantity, ChannelQuantity):
-	__tablename__ = 'pedestal_mean_run_channel'
-	id            = db.Column(db.Integer, primary_key=True)
-	pedestal_mean = db.Column(db.Float)
-
-	def __init__(self, pedestal_mean, run, channel_id):
-		self.pedestal_mean = pedestal_mean
-		self.run = run
-		self.channel = channel_id
-	
-	def __repr__(self):
-		return "id {}, run {}, channel {} => {}".format(self.id, self.run, self.channel, self.pedestal_mean)
-		return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
-
-	# Extract data from DQM histogram
-	def extract(self, run, emap_version="2017J"):
-		# Get data
-		dqm_data = load_dqm_object(run, "PEDESTAL/Commissioning2018/DQMIO", "Hcal/PedestalTask/Mean/depth")
-
-		# Get histograms
-		hist_pedestal_mean = {}
-		for depth in range(1, 8):
-			hist_pedestal_mean[depth] = dqm_data["depth{}".format(depth)]
-		
-		# Extract all pedestals from the DQM histograms here
-		channels = Channel.query.filter(Channel.emap_version==emap_version)
-		for channel in channels:
-			xbin, ybin = hcaldqmfunctions.detid_to_histbins(channel.subdet, channel.ieta, channel.iphi, channel.depth)
-			this_reading = PedestalMean_Run_Channel(hist_pedestal_mean[channel.depth].GetBinContent(xbin, ybin), run, channel.id)
-			this_reading.save()
 
 
