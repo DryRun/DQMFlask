@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declared_attr
 class Channel(db.Model):
 	__tablename__ = "channel"
 	id            = db.Column(db.Integer, primary_key=True)
-	subdet        = db.Column(db.String(10), nullable=False)
+	subdet        = db.Column(db.String(8), nullable=False)
 	ieta          = db.Column(db.SmallInteger, nullable=False)
 	iphi          = db.Column(db.SmallInteger, nullable=False)
 	depth         = db.Column(db.SmallInteger, nullable=False)
@@ -16,7 +16,7 @@ class Channel(db.Model):
 	spigot        = db.Column(db.SmallInteger, nullable=False)
 	fiber         = db.Column(db.SmallInteger, nullable=False)
 	fiber_channel = db.Column(db.SmallInteger, nullable=False)
-	emap_version  = db.Column(db.String(20), nullable=False)
+	emap_version  = db.Column(db.String(8), nullable=False)
 
 	def __init__(self, subdet, ieta, iphi, depth, crate, slot, dcc, spigot, fiber, fiber_channel, emap_version):
 		self.subdet = subdet
