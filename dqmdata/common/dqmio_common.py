@@ -47,6 +47,7 @@ def download_dqm_json_object(url, project, run, object_name):
 			   { "__builtins__": None }, {})
 	# Save data to a pickle
 	cached_path = get_dqm_json_cachepath(project, run, object_name)
+	os.system("mkdir -pv {}".format(os.path.dirname(cached_path)))
 	with open(cached_path, 'w') as f:
 		pickle.dump(data, f)
 	return cached_path	
