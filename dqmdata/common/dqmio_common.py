@@ -3,7 +3,7 @@ import pickle
 import re
 import urllib2
 from x509auth import *
-from ROOT import TBufferFile, TH1F, TProfile, TH1F, TH2F
+from ROOT import TBufferFile, TH1F, TProfile, TProfile2D, TH1F, TH2F
 
 cache_directory = "/afs/cern.ch/user/c/cmshcaldqm/DQMFlask/cache"
 
