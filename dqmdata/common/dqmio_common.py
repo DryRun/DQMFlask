@@ -5,7 +5,7 @@ import urllib2
 from x509auth import *
 from ROOT import TBufferFile, TH1F, TProfile, TH1F, TH2F
 
-cache_directory = "/Users/dryu/Sites/DQMFlask/cache/"
+cache_directory = "/afs/cern.ch/user/c/cmshcaldqm/DQMFlask/cache"
 
 def convert_json_to_root(json_data):
 	return_dict = {}
@@ -32,7 +32,7 @@ def convert_json_to_root(json_data):
 
 # Get the cache location of a DQM object downloaded from the JSON API
 def get_dqm_json_cachepath(project, run, object_name):
-	return "{}/json_objects/{}/{}.dat".format(project, run, object_name)
+	return "{}/{}/json_objects/{}/{}.dat".format(cache_directory, project, run, object_name)
 
 # Download a DQM object as JSON
 # - URL must be fully provided. The URL structure between subdetectors and DQM flavors is not intuitively compatible, so each subdetector and DQM flavor should implement the URL building.

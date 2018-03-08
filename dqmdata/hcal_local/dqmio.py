@@ -12,6 +12,7 @@ def load_dqm_object(run, dataset, rootpath, force_download=False):
 	# Check if object exists in cache. If not, download.
 	object_name = dataset.replace("/", "_") + "/" + rootpath.replace("/", "_")
 	cachepath = get_dqm_json_cachepath("hcal_local", run, object_name)
+	print "[debug] cachepath={}".format(cachepath)
 	if not os.path.isfile(cachepath) or force_download:
 		url = "https://cmsweb.cern.ch/dqm/hcal-online/data/json/archive/{}/{}/{}".format(run, dataset, rootpath)
 		download_dqm_json_object(url, "hcal_local", run, object_name)
@@ -25,4 +26,4 @@ def load_dqm_object(run, dataset, rootpath, force_download=False):
 if __name__ == "__main__":
 	# Test loading DQM object
 	print load_dqm_object(311043, "PEDESTAL/Commissioning2018/DQMIO", "Hcal/PedestalTask/Mean/depth")
-	print "Done." 
+	print "Done."  
