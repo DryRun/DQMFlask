@@ -1,7 +1,13 @@
 from dqmdata import db
 from dqmdata.hcal_local.dqmio import load_dqm_object
 from sqlalchemy.ext.declarative import declared_attr
- 
+
+class Dummy(db.Model):
+	__tablename__ = "dummy"
+	id            = db.Column(db.Integer, primary_key=True)
+	name        = db.Column(db.String(8), nullable=False)
+
+
 # Utility models
 class Channel(db.Model):
 	__tablename__ = "channel"
@@ -96,7 +102,7 @@ class SubdetIEtaQuantity(object):
 
 # Data models
 class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
-	__tablename__ = 'pedestal_mean__run__channel'
+	__tablename__ = 'pedestal_mean_run_channel'
 	id            = db.Column(db.Integer, primary_key=True)
 	pedestal_mean = db.Column(db.Float)
 
