@@ -148,6 +148,8 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 		# Extract all pedestals from the DQM histograms here
 		channels = Channel.query.filter(Channel.emap_version==emap_version)
 		for channel in channels:
+			if not channel.subdet in ["HB", "HE", "HF", "HO", "HEP17"]:
+				continue
 			xbin, ybin = detid_to_histbins(channel.subdet, channel.ieta, channel.iphi)
 			this_reading = PedestalMean_Run_Channel(run=run, pedestal_mean=hist_pedestal_mean[channel.depth].GetBinContent(xbin, ybin), channel_id=channel.id)
 			print this_reading

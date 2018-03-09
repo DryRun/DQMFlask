@@ -55,6 +55,9 @@ def process_emap(version, path):
 		iphi          = int(contents[10])
 		depth         = int(contents[11])
 
+		if not subdet in ["HB", "HE", "HF", "HO", "HEP17"]:
+			continue
+
 		channel = Channel(
 			subdet        = subdet,
 			ieta          = ieta,
