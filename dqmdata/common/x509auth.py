@@ -25,22 +25,23 @@ def x509_params():
 
 	x509_path = os.getenv("X509_USER_PROXY", None)
 	if x509_path and os.path.exists(x509_path):
-	 key_file = cert_file = "/data/users/cctrkdata/current/auth/proxy/proxy.cert"
+		key_file = "/data/users/cctrkdata/current/auth/proxy/proxy.cert"
+		cert_file = "/data/users/cctrkdata/current/auth/proxy/proxy.cert"
 
 	if not key_file:
-	 x509_path = "/data/users/cctrkdata/current/auth/proxy/proxy.cert"
-	 if os.path.exists(x509_path):
-		 key_file = x509_path
+		x509_path = "/data/users/cctrkdata/current/auth/proxy/proxy.cert"
+		if os.path.exists(x509_path):
+			key_file = x509_path
 
 	if not cert_file:
-	 x509_path = "/data/users/cctrkdata/current/auth/proxy/proxy.cert"
-	 if os.path.exists(x509_path):
-		 cert_file = x509_path     
+		x509_path = "/data/users/cctrkdata/current/auth/proxy/proxy.cert"
+		if os.path.exists(x509_path):
+			cert_file = x509_path     
 
 	if not key_file:
-	 x509_path = os.getenv("X509_USER_KEY", None)
-	 if x509_path and os.path.exists(x509_path):
-		 key_file = x509_path
+		x509_path = os.getenv("X509_USER_KEY", None)
+		if x509_path and os.path.exists(x509_path):
+			key_file = x509_path
 
 	if not cert_file:
 	 x509_path = os.getenv("X509_USER_CERT", None)
@@ -48,22 +49,22 @@ def x509_params():
 		 cert_file = x509_path
 
 	if not key_file:
-	 x509_path = os.getenv("HOME") + "/.globus/userkey.pem"
-	 if os.path.exists(x509_path):
-		 key_file = x509_path
+		x509_path = os.getenv("HOME") + "/.globus/userkey.pem"
+		if os.path.exists(x509_path):
+			key_file = x509_path
 
 	if not cert_file:
-	 x509_path = os.getenv("HOME") + "/.globus/usercert.pem"
-	 if os.path.exists(x509_path):
-		 cert_file = x509_path
+		x509_path = os.getenv("HOME") + "/.globus/usercert.pem"
+		if os.path.exists(x509_path):
+			cert_file = x509_path
 
 	if not key_file or not os.path.exists(key_file):
-	 print >>sys.stderr, "no certificate private key file found"
-	 sys.exit(1)
+		print >>sys.stderr, "no certificate private key file found"
+		sys.exit(1)
 
 	if not cert_file or not os.path.exists(cert_file):
-	 print >>sys.stderr, "no certificate public key file found"
-	 sys.exit(1)
+		print >>sys.stderr, "no certificate public key file found"
+		sys.exit(1)
 
 	sys.stderr.write("Using SSL private key %s\n" % key_file)
 	sys.stderr.write("Using SSL public  key %s\n" % cert_file)

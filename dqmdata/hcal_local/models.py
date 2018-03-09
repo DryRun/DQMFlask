@@ -1,3 +1,4 @@
+import sys
 from dqmdata import db
 from dqmdata.hcal_local.dqmio import load_dqm_object
 from sqlalchemy.ext.declarative import declared_attr
