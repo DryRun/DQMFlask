@@ -44,6 +44,9 @@ class ChannelQuantity(object):
 	def channel_id(cls):
 		return db.Column(db.Integer, db.ForeignKey("channel.id"))
 
+	@declared_attr
+	def channel(cls):
+		return db.relationship("channel", backref=cls.__name__)
 
 	#@declared_attr
 	#def channel(cls):
@@ -115,7 +118,7 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 	pedestal_mean = db.Column(db.Float)
 
 	def __repr__(self):
-		return "id {}, run {} => {}".format(self.id, self.run, self.pedestal_mean)
+		return "id {}, channel {}, run {} => {}".format(self.id, self.channel.subdet, self.run, self.pedestal_mean)
 		#return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
 
 	# Extract data from DQM histogram
