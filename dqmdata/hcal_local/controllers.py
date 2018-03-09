@@ -3,7 +3,7 @@ from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for, current_app
 from dqmdata import db
 
-from dqmdata.hcal_local.models import Channel, PedestalMean_Run_Channel
+from dqmdata.hcal_local.models import *
 
 hcal_local = Blueprint('hcal_local', __name__, url_prefix='/hcal_local')
 
