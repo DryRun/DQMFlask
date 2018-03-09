@@ -115,8 +115,8 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 	pedestal_mean = db.Column(db.Float)
 
 	def __repr__(self):
-		return "id {}, run {}, channel {} => {}".format(self.id, self.run, self.channel, self.pedestal_mean)
-		return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
+		return "id {}, run {} => {}".format(self.id, self.run, self.pedestal_mean)
+		#return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
 
 	# Extract data from DQM histogram
 	def extract(self, run, emap_version="2017J"):
