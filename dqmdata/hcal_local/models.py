@@ -119,13 +119,18 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 		#return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
 
 	# Extract data from DQM histogram
-	def extract(self, run, emap_version="2017J"):
+	def extract(self, run, emap_version="2017J", overwrite=False):
 		print "[PedestalMean_Run_Channel::extract] Extracting for run {}".format(run)
 
 		# Check that this run is not already in DB
 		if PedestalMean_Run_Channel.query.filter_by(run=run).count() > 0:
-			print "[PedestalMean_Run_Channel::extract] ERROR : Run {} already exists in DB! Delete before proceeding."
-			sys.exit(1)
+			if not overwrite:
+				print "[PedestalMean_Run_Channel::extract] ERROR : Run {} already exists in DB! Specify overwrite to overwrite."
+				sys.exit(1)
+			else:
+				for reading in PedestalMean_Run_Channel.query.filter_by(run=run):
+					db.session.delete(reading)
+					db.session.commit()
 
 		# Get data
 		if emap_version == "2017J":
@@ -144,8 +149,9 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 		channels = Channel.query.filter(Channel.emap_version==emap_version)
 		for channel in channels:
 			xbin, ybin = detid_to_histbins(channel.subdet, channel.ieta, channel.iphi)
-			this_reading = PedestalMean_Run_Channel()
+			this_reading = PedestalMean_Run_Channel(run=run, pedestal_mean=hist_pedestal_mean[channel.depth].GetBinContent(xbin, ybin), channel_id=channel.id)
 			print this_reading
-			this_reading.save()
+			db.session.add(this_reading)
+
 
 
