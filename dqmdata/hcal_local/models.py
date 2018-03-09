@@ -93,6 +93,20 @@ class SubdetIEtaQuantity(object):
 	depth = db.Column(db.SmallInteger, nullable=False)
 	#__abstract__ = True
 
+def detid_to_histbins(subdet, ieta, iphi):
+	if ieta < 0:
+		if subdet == "HF":
+			xbin = ieta + 42
+		else:
+			xbin = ieta + 43
+	else:
+		if subdet == "HF":
+			xbin = ieta + 43
+		else:
+			xbin = ieta + 42
+	ybin = iphi
+	return xbin, ybin
+
 
 # Data models
 class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
@@ -107,6 +121,12 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 	# Extract data from DQM histogram
 	def extract(self, run, emap_version="2017J"):
 		print "[PedestalMean_Run_Channel::extract] Extracting for run {}".format(run)
+
+		# Check that this run is not already in DB
+		if PedestalMean_Run_Channel.query.filter_by(run=run).count() > 0:
+			print "[PedestalMean_Run_Channel::extract] ERROR : Run {} already exists in DB! Delete before proceeding."
+			sys.exit(1)
+
 		# Get data
 		if emap_version == "2017J":
 			dataset = "PEDESTAL/Commissioning2016/DQMIO"
@@ -123,7 +143,7 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 		# Extract all pedestals from the DQM histograms here
 		channels = Channel.query.filter(Channel.emap_version==emap_version)
 		for channel in channels:
-			xbin, ybin = hcaldqmfunctions.detid_to_histbins(channel.subdet, channel.ieta, channel.iphi, channel.depth)
+			xbin, ybin = detid_to_histbins(channel.subdet, channel.ieta, channel.iphi)
 			this_reading = PedestalMean_Run_Channel(hist_pedestal_mean[channel.depth].GetBinContent(xbin, ybin), run, channel.id)
 			print this_reading
 			this_reading.save()
