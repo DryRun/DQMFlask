@@ -114,7 +114,7 @@ def detid_to_histbins(subdet, ieta, iphi):
 def check_overwrite(quantity, run, emap_version, overwrite):
 	if quantity.query.filter_by(run=run).count() > 0:
 		if not overwrite:
-			print "[PedestalMean_Run_Channel::extract] ERROR : Run {} already exists in DB for quantity {}! Specify overwrite to overwrite.".format(run, quantity)
+			print "[check_overwrite] ERROR : Run {} already exists in DB for quantity {}! Specify overwrite to overwrite.".format(run, quantity)
 			return False
 		else:
 			for reading in quantity.query.filter_by(run=run):
@@ -169,7 +169,7 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 		db.session.commit()
 
 class PedestalRMS_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
-	__tablename__ = 'pedestal_mean_run_channel'
+	__tablename__ = 'pedestal_rms_run_channel'
 	id            = db.Column(db.Integer, primary_key=True)
 	pedestal_rms = db.Column(db.Float)
 
@@ -182,7 +182,7 @@ class PedestalRMS_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 		print "[PedestalRMS_Run_Channel::extract] Extracting for run {}".format(run)
 
 		# Check that this run is not already in DB
-		if not check_overwrite(PedestalMean_Run_Channel, run, emap_version, overwrite=False):
+		if not check_overwrite(PedestalRMS_Run_Channel, run, emap_version, overwrite=False):
 			return
 
 		# Get data
