@@ -111,6 +111,17 @@ def detid_to_histbins(subdet, ieta, iphi):
 	ybin = iphi
 	return xbin, ybin
 
+def check_overwrite(quantity, run, emap_version, overwrite):
+	if quantity.query.filter_by(run=run).count() > 0:
+		if not overwrite:
+			print "[PedestalMean_Run_Channel::extract] ERROR : Run {} already exists in DB for quantity {}! Specify overwrite to overwrite.".format(run, quantity)
+			return False
+		else:
+			for reading in quantity.query.filter_by(run=run):
+				db.session.delete(reading)
+			db.session.commit()
+	return True
+
 
 # Data models
 class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
@@ -127,14 +138,8 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 		print "[PedestalMean_Run_Channel::extract] Extracting for run {}".format(run)
 
 		# Check that this run is not already in DB
-		if PedestalMean_Run_Channel.query.filter_by(run=run).count() > 0:
-			if not overwrite:
-				print "[PedestalMean_Run_Channel::extract] ERROR : Run {} already exists in DB! Specify overwrite to overwrite.".format(run)
-				sys.exit(1)
-			else:
-				for reading in PedestalMean_Run_Channel.query.filter_by(run=run):
-					db.session.delete(reading)
-				db.session.commit()
+		if not check_overwrite(PedestalMean_Run_Channel, run, emap_version, overwrite=False):
+			return
 
 		# Get data
 		if emap_version == "2017J":
@@ -159,6 +164,50 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 			if this_pedestal_mean == 0: # Zero suppress. This plot monitors drifts, not errors.
 				continue
 			this_reading = PedestalMean_Run_Channel(run=run, pedestal_mean=this_pedestal_mean, channel_id=channel.id)
+			#print this_reading
+			db.session.add(this_reading)
+		db.session.commit()
+
+class PedestalRMS_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
+	__tablename__ = 'pedestal_mean_run_channel'
+	id            = db.Column(db.Integer, primary_key=True)
+	pedestal_rms = db.Column(db.Float)
+
+	def __repr__(self):
+		return "id {}, channel {}, run {} => {}".format(self.id, self.channel, self.run, self.pedestal_rms)
+		#return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
+
+	# Extract data from DQM histogram
+	def extract(self, run, emap_version="2017J", overwrite=False):
+		print "[PedestalRMS_Run_Channel::extract] Extracting for run {}".format(run)
+
+		# Check that this run is not already in DB
+		if not check_overwrite(PedestalMean_Run_Channel, run, emap_version, overwrite=False):
+			return
+
+		# Get data
+		if emap_version == "2017J":
+			dataset = "PEDESTAL/Commissioning2016/DQMIO"
+		else:
+			dataset = "PEDESTAL/Commissioning2018/DQMIO"
+		dqm_data = load_dqm_object(run, dataset, "Hcal/PedestalTask/RMS/depth")
+		#print dqm_data
+
+		# Get histograms
+		hist_pedestal_rms = {}
+		for depth in range(1, 8):
+			hist_pedestal_rms[depth] = dqm_data["depth{}".format(depth)]
+		
+		# Extract all pedestals from the DQM histograms here
+		channels = Channel.query.filter(Channel.emap_version==emap_version)
+		for channel in channels:
+			if not channel.subdet in ["HB", "HE", "HF", "HO", "HEP17"]:
+				continue
+			xbin, ybin = detid_to_histbins(channel.subdet, channel.ieta, channel.iphi)
+			this_pedestal_rms = hist_pedestal_rms[channel.depth].GetBinContent(xbin, ybin)
+			if this_pedestal_rms == 0: # Zero suppress. This plot monitors drifts, not errors.
+				continue
+			this_reading = PedestalRMS_Run_Channel(run=run, pedestal_rms=this_pedestal_rms, channel_id=channel.id)
 			#print this_reading
 			db.session.add(this_reading)
 		db.session.commit()
