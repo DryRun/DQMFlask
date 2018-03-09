@@ -160,6 +160,8 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 				continue
 			this_reading = PedestalMean_Run_Channel(run=run, pedestal_mean=this_pedestal_mean, channel_id=channel.id)
 			print this_reading
+			print "\t",
+			print channel
 			db.session.add(this_reading)
 		db.session.commit()
 
