@@ -92,7 +92,20 @@ def delete_emap(version):
 @click.option('--run')
 @click.option('--emap')
 @click.option('--overwrite', is_flag=True)
-def process_dqm_file(quantity, run, emap, overwrite):
+def extract(quantity, run, emap, overwrite):
 	quantity_object = eval(quantity)()
 	quantity_object.extract(run, emap, overwrite=overwrite)
 
+@app.cli.command(with_appcontext=True)
+@click.option('--quantity')
+@click.option('--run')
+@click.option('--emap')
+@click.option('--overwrite', is_flag=True)
+def delete(quantity, run):
+	counter = 0
+	for reading in eval(quantity).query.filter_by(run=run):
+		db.session.delete(reading)
+		if counter % 200 == 0:
+			db.session.flush()
+		counter += 1
+	db.session.commit()

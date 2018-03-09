@@ -134,7 +134,7 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 			else:
 				for reading in PedestalMean_Run_Channel.query.filter_by(run=run):
 					db.session.delete(reading)
-					db.session.commit()
+				db.session.commit()
 
 		# Get data
 		if emap_version == "2017J":
@@ -155,7 +155,10 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 			if not channel.subdet in ["HB", "HE", "HF", "HO", "HEP17"]:
 				continue
 			xbin, ybin = detid_to_histbins(channel.subdet, channel.ieta, channel.iphi)
-			this_reading = PedestalMean_Run_Channel(run=run, pedestal_mean=hist_pedestal_mean[channel.depth].GetBinContent(xbin, ybin), channel_id=channel.id)
+			this_pedestal_mean = hist_pedestal_mean[channel.depth].GetBinContent(xbin, ybin)
+			if this_pedestal_mean == 0: # Zero suppress. This plot monitors drifts, not errors.
+				continue
+			this_reading = PedestalMean_Run_Channel(run=run, pedestal_mean=this_pedestal_mean, channel_id=channel.id)
 			print this_reading
 			db.session.add(this_reading)
 		db.session.commit()
