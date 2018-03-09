@@ -46,7 +46,7 @@ class ChannelQuantity(object):
 
 	@declared_attr
 	def channel(cls):
-		return db.relationship("channel", backref=cls.__name__)
+		return db.relationship(Channel, backref=cls.__name__)
 
 	#@declared_attr
 	#def channel(cls):
