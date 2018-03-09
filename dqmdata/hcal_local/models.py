@@ -142,7 +142,7 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 		else:
 			dataset = "PEDESTAL/Commissioning2018/DQMIO"
 		dqm_data = load_dqm_object(run, dataset, "Hcal/PedestalTask/Mean/depth")
-		print dqm_data
+		#print dqm_data
 
 		# Get histograms
 		hist_pedestal_mean = {}
@@ -159,9 +159,7 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 			if this_pedestal_mean == 0: # Zero suppress. This plot monitors drifts, not errors.
 				continue
 			this_reading = PedestalMean_Run_Channel(run=run, pedestal_mean=this_pedestal_mean, channel_id=channel.id)
-			print this_reading
-			print "\t",
-			print channel
+			#print this_reading
 			db.session.add(this_reading)
 		db.session.commit()
 
