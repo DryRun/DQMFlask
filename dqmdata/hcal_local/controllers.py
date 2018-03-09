@@ -94,5 +94,5 @@ def delete_emap(version):
 @click.option('--overwrite', is_flag=True)
 def process_dqm_file(quantity, run, emap, overwrite):
 	quantity_object = eval(quantity)()
-	quantity_object.extract(run, emap)
+	quantity_object.extract(run, emap, overwrite=overwrite)
 

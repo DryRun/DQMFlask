@@ -129,7 +129,7 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 		# Check that this run is not already in DB
 		if PedestalMean_Run_Channel.query.filter_by(run=run).count() > 0:
 			if not overwrite:
-				print "[PedestalMean_Run_Channel::extract] ERROR : Run {} already exists in DB! Specify overwrite to overwrite."
+				print "[PedestalMean_Run_Channel::extract] ERROR : Run {} already exists in DB! Specify overwrite to overwrite.".format(run)
 				sys.exit(1)
 			else:
 				for reading in PedestalMean_Run_Channel.query.filter_by(run=run):
