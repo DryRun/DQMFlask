@@ -154,6 +154,7 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 			this_reading = PedestalMean_Run_Channel(run=run, pedestal_mean=hist_pedestal_mean[channel.depth].GetBinContent(xbin, ybin), channel_id=channel.id)
 			print this_reading
 			db.session.add(this_reading)
+		db.session.commit()
 
 
 

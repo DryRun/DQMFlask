@@ -76,14 +76,18 @@ def process_emap(version, path):
 			db.session.flush()
 	db.session.commit()
 
-@app.cli.command(with_appcontext=False)
+@app.cli.command(with_appcontext=True)
 @click.option('--version')
 def delete_emap(version):
+	counter = 0
 	for channel in Channel.query.filter_by(emap_version=version):
 		db.session.delete(channel)
+		if counter % 200 == 0:
+			db.session.flush()
+		counter += 1
 	db.session.commit()
 
-@app.cli.command(with_appcontext=False)
+@app.cli.command(with_appcontext=True)
 @click.option('--quantity')
 @click.option('--run')
 @click.option('--emap')
