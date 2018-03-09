@@ -144,7 +144,7 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 		channels = Channel.query.filter(Channel.emap_version==emap_version)
 		for channel in channels:
 			xbin, ybin = detid_to_histbins(channel.subdet, channel.ieta, channel.iphi)
-			this_reading = PedestalMean_Run_Channel(hist_pedestal_mean[channel.depth].GetBinContent(xbin, ybin), run, channel.id)
+			this_reading = PedestalMean_Run_Channel()
 			print this_reading
 			this_reading.save()
 
