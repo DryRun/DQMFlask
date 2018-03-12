@@ -5,11 +5,41 @@ from dqmdata import db
 
 from dqmdata.hcal_local.models import *
 
+import json
+
 hcal_local = Blueprint('hcal_local', __name__, url_prefix='/hcal_local')
 
 @hcal_local.route('/emap/', methods=['GET'])
 def emap():
 	pass
+
+# Top level "get" route
+@hcal_local.route('/get/<quantity_name>', methods=['GET'])
+def get(quantity_name, max_entries=100):
+	valid_quantities = ["PedestalMean_Run_Channel", "PedestalRMS_Run_Channel"]
+	if not quantity_name in valid_quantities:
+		return render_template("400.html")
+
+	channel_filter_keys = ["ieta", "iphi", "subdet", "depth"]
+	channel_filters = {}
+	for channel_key in channel_keys:
+		if channel_key in request.args:
+			if channel_key in ["ieta", "iphi", "depth"]:
+				value = int(request.args(channel_key))
+			else:
+				value = request.args(channel_key)
+			channels[channel_key] = value
+
+	# Get data
+	quantity = eval(quantity_name)
+	data = quantity.query.filter_by(channel_filters)
+
+	if "min_run" in request.args:
+		data = data.filter(quantity.run >= int(request.args.get("min_run")))
+	if "max_run" in request.args:
+		data = data.filter(quantity.run <= int(request.args.get("max_run")))
+	
+	return json.dumps([reading.as_dict() for reading in data.limit(max_entries)])
 
 
 # Custom commands
