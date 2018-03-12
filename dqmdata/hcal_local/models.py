@@ -183,6 +183,7 @@ class PedestalRMS_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 
 		# Check that this run is not already in DB
 		if not check_overwrite(PedestalRMS_Run_Channel, run, emap_version, overwrite=False):
+			print "[PedestalRMS_Run_Channel::extract] INFO : Failed overwrite check for run {}".format(run)
 			return
 
 		# Get data
