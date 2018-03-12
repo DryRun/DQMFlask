@@ -29,17 +29,17 @@ def get_dqm_json_cachepath(project, run, object_name):
 # Download a DQM object as JSON
 # - URL must be fully provided. The URL structure between subdetectors and DQM flavors is not intuitively compatible, so each subdetector and DQM flavor should implement the URL building.
 def download_dqm_json_object(url, project, run, object_name):
+	cached_path = get_dqm_json_cachepath(project, run, object_name)
 	X509CertAuth.ssl_key_file, X509CertAuth.ssl_cert_file = x509_params()
 	if not "?rootcontent=1" in url:
 		url += "?rootcontent=1"
-	print "[download_dqm_json_object] INFO : Downloading ROOT JSON from {}".format(url)
+	print "[download_dqm_json_object] INFO : Downloading ROOT JSON from {} to {}".format(url, cached_path)
 	datareq = urllib2.Request(url)
 	datareq.add_header('User-agent', ident)
 	# Get data
 	data = eval(re.sub(r"\bnan\b", "0", urllib2.build_opener(X509CertOpen()).open(datareq).read()),
 			   { "__builtins__": None }, {})
 	# Save data to a pickle
-	cached_path = get_dqm_json_cachepath(project, run, object_name)
 	os.system("mkdir -pv {}".format(os.path.dirname(cached_path)))
 	with open(cached_path, 'w') as f:
 		pickle.dump(data, f)

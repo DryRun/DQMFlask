@@ -66,7 +66,7 @@ def x509_params():
 		print >>sys.stderr, "no certificate public key file found"
 		sys.exit(1)
 
-	sys.stderr.write("Using SSL private key %s\n" % key_file)
-	sys.stderr.write("Using SSL public  key %s\n" % cert_file)
+	#sys.stderr.write("Using SSL private key %s\n" % key_file)
+	#sys.stderr.write("Using SSL public  key %s\n" % cert_file)
 	return key_file, cert_file
 
