@@ -13,9 +13,9 @@ class Serializable(object):
 			if k in blacklist:
 				continue
 			elif isinstance(v, list): #One to Many/Many to Many relationship, add a list of serialized child objects
-				result[k] = [i.as_dict() for i in v]
+				result[k] = [i.as_dict for i in v]
 			elif isinstance(v, db.Model): #One to One relationship, serialize the child and include it
-				result[k] = v.as_dict()
+				result[k] = v.as_dict
 			else:
 				result[k] = v
 		return result
