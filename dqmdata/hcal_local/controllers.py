@@ -22,13 +22,13 @@ def get(quantity_name, max_entries=100):
 
 	channel_filter_keys = ["ieta", "iphi", "subdet", "depth"]
 	channel_filters = {}
-	for channel_key in channel_keys:
-		if channel_key in request.args:
-			if channel_key in ["ieta", "iphi", "depth"]:
-				value = int(request.args(channel_key))
+	for channel_filter_key in channel_filter_keys:
+		if channel_filter_key in request.args:
+			if channel_filter_key in ["ieta", "iphi", "depth"]:
+				value = int(request.args(channel_filter_key))
 			else:
-				value = request.args(channel_key)
-			channels[channel_key] = value
+				value = request.args(channel_filter_key)
+			channels[channel_filter_key] = value
 
 	# Get data
 	quantity = eval(quantity_name)
