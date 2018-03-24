@@ -3,6 +3,23 @@ from dqmdata import db
 from dqmdata.hcal_local.dqmio import load_dqm_object
 from sqlalchemy.ext.declarative import declared_attr
 
+class Serializable(object):
+	@property
+	def as_dict(self):
+		blacklist = ['_sa_instance_state']
+		blacklist.extend(getattr(self, '_serialize_blacklist', []))
+		result = {}
+		for k,v in self.__dict__.iteritems():
+			if k in blacklist:
+				continue
+			elif isinstance(v, list): #One to Many/Many to Many relationship, add a list of serialized child objects
+				result[k] = [i.as_dict() for i in v]
+			elif isinstance(v, db.Model): #One to One relationship, serialize the child and include it
+				result[k] = v.as_dict()
+			else:
+				result[k] = v
+		return result
+
 # Utility models
 class Channel(Serializable, db.Model):
 	__tablename__ = "channel"
@@ -96,23 +113,6 @@ class SubdetIEtaQuantity(object):
 	ieta = db.Column(db.SmallInteger, nullable=False)
 	depth = db.Column(db.SmallInteger, nullable=False)
 	#__abstract__ = True
-
-class Serializable(object):
-	@property
-	def as_dict(self):
-		blacklist = ['_sa_instance_state']
-		blacklist.extend(getattr(self, '_serialize_blacklist', []))
-		result = {}
-		for k,v in self.__dict__.iteritems():
-			if k in blacklist:
-				continue
-			elif isinstance(v, list): #One to Many/Many to Many relationship, add a list of serialized child objects
-				result[k] = [i.as_dict() for i in v]
-			elif isinstance(v, db.Model): #One to One relationship, serialize the child and include it
-				result[k] = v.as_dict()
-			else:
-				result[k] = v
-		return result
 
 def detid_to_histbins(subdet, ieta, iphi):
 	if ieta < 0:
