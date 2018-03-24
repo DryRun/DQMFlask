@@ -13,14 +13,12 @@ class Serializable(object):
 			if k in blacklist:
 				continue
 			elif isinstance(v, list): #One to Many/Many to Many relationship, add a list of serialized child objects
-				print "[debug] 1-many or many-many for key " + k
 				result[k] = [i.as_dict for i in v]
 			elif isinstance(v, db.Model): #One to One relationship, serialize the child and include it
-				print "[debug] 1-1 for key " + k
 				result[k] = v.as_dict
 			else:
 				result[k] = v
-		return self.__dict__
+		return ",".join(self.__dict__.keys())
 		return result
 
 # Utility models
@@ -54,6 +52,10 @@ class Channel(Serializable, db.Model):
 
 	def __repr__(self):
 		return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
+
+	@property
+	def as_dict(self):
+		return {"subdet":self.subdet, "ieta":self.ieta, "iphi":self.iphi, "depth":self.depth}
 
 # Mixins
 class RunQuantity(object):
