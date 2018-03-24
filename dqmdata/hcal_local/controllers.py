@@ -2,9 +2,7 @@
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for, current_app
 from dqmdata import db
-
 from dqmdata.hcal_local.models import *
-
 import json
 
 hcal_local = Blueprint('hcal_local', __name__, url_prefix='/hcal_local')
@@ -39,7 +37,8 @@ def get(quantity_name, max_entries=100):
 	if "max_run" in request.args:
 		data = data.filter(quantity.run <= int(request.args.get("max_run")))
 	
-	return json.dumps([reading.__dict__ for reading in data.limit(max_entries)])
+	return
+	return json.dumps([reading.as_dict() for reading in data.limit(max_entries)])
 
 
 # Custom commands

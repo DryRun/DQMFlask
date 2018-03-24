@@ -97,6 +97,23 @@ class SubdetIEtaQuantity(object):
 	depth = db.Column(db.SmallInteger, nullable=False)
 	#__abstract__ = True
 
+class Serializable(object):
+	@property
+	def as_dict(self):
+		blacklist = ['_sa_instance_state']
+		blacklist.extend(getattr(self, '_serialize_blacklist', []))
+		result = {}
+		for k,v in self.__dict__.iteritems():
+			if k in blacklist:
+				continue
+			elif isinstance(v, list): #One to Many/Many to Many relationship, add a list of serialized child objects
+				result[k] = [i.serialized for i in v]
+			elif isinstance(v, db.Model): #One to One relationship, serialize the child and include it
+				result[k] = v.serialized
+			else:
+				result[k] = v
+		return result
+
 def detid_to_histbins(subdet, ieta, iphi):
 	if ieta < 0:
 		if subdet == "HF":
@@ -124,7 +141,7 @@ def check_overwrite(quantity, run, emap_version, overwrite):
 
 
 # Data models
-class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
+class PedestalMean_Run_Channel(Serializable, RunQuantity, ChannelQuantity, db.Model):
 	__tablename__ = 'pedestal_mean_run_channel'
 	id            = db.Column(db.Integer, primary_key=True)
 	pedestal_mean = db.Column(db.Float)
@@ -168,7 +185,7 @@ class PedestalMean_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
 			db.session.add(this_reading)
 		db.session.commit()
 
-class PedestalRMS_Run_Channel(RunQuantity, ChannelQuantity, db.Model):
+class PedestalRMS_Run_Channel(Serializable, RunQuantity, ChannelQuantity, db.Model):
 	__tablename__ = 'pedestal_rms_run_channel'
 	id            = db.Column(db.Integer, primary_key=True)
 	pedestal_rms = db.Column(db.Float)
