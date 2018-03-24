@@ -37,7 +37,6 @@ def get(quantity_name, max_entries=100):
 	if "max_run" in request.args:
 		data = data.filter(quantity.run <= int(request.args.get("max_run")))
 	
-	return
 	return json.dumps([reading.as_dict() for reading in data.limit(max_entries)])
 
 
