@@ -20,6 +20,7 @@ class Serializable(object):
 				result[k] = v.as_dict
 			else:
 				result[k] = v
+		return self.__dict__
 		return result
 
 # Utility models
