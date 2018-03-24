@@ -31,8 +31,8 @@ app.register_blueprint(hcal_local)
 # app.register_blueprint(xyz_module)
 # ..
 
-@app.route('/', methods=[])
-@app.route('/index.html', methods=[])
+@app.route('/')
+@app.route('/index.html')
 def index():
 	return '''
 <html>
