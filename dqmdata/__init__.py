@@ -19,7 +19,7 @@ migrate = Migrate(app, db)
 # Sample HTTP error handling
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('404.html'), 404
+    return render_template('templates/404.html'), 404
 
 # Import a module / component using its blueprint handler variable (hcal_local)
 from dqmdata.common.controllers import common as common
@@ -30,6 +30,17 @@ app.register_blueprint(common)
 app.register_blueprint(hcal_local)
 # app.register_blueprint(xyz_module)
 # ..
+
+@app.route('/', methods=[])
+@app.route('/index.html', methods=[])
+def index():
+	return '''
+<html>
+	<body>
+		Welcome to HCAL DQMFlask, written by David Yu. This is only a backend API, not a website!
+	</body>
+</html>'''
+
 
 # Build the database:
 # This will create the database file using SQLAlchemy
