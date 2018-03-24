@@ -40,9 +40,9 @@ def get(quantity_name, max_entries=100):
 	# debug
 	reading0 = data[0]
 	print reading0
-	print reading0.as_dict()
+	print reading0.as_dict
 
-	return json.dumps([reading.as_dict() for reading in data.limit(max_entries)])
+	return json.dumps([reading.as_dict for reading in data.limit(max_entries)])
 
 
 # Custom commands
