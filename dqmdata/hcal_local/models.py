@@ -4,7 +4,7 @@ from dqmdata.hcal_local.dqmio import load_dqm_object
 from sqlalchemy.ext.declarative import declared_attr
 
 # Utility models
-class Channel(db.Model):
+class Channel(Serializable, db.Model):
 	__tablename__ = "channel"
 	id            = db.Column(db.Integer, primary_key=True)
 	subdet        = db.Column(db.String(8), nullable=False)
