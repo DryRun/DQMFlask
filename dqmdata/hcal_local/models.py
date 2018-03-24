@@ -151,7 +151,7 @@ class PedestalMean_Run_Channel(Serializable, RunQuantity, ChannelQuantity, db.Mo
 	value         = db.Column(db.Float)
 
 	def __repr__(self):
-		return "id {}, channel {}, run {} => {}".format(self.id, self.channel, self.run, self.pedestal_mean)
+		return "id {}, channel {}, run {} => {}".format(self.id, self.channel, self.run, self.value)
 		#return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
 
 	# Extract data from DQM histogram
@@ -184,7 +184,7 @@ class PedestalMean_Run_Channel(Serializable, RunQuantity, ChannelQuantity, db.Mo
 			this_pedestal_mean = hist_pedestal_mean[channel.depth].GetBinContent(xbin, ybin)
 			if this_pedestal_mean == 0: # Zero suppress. This plot monitors drifts, not errors.
 				continue
-			this_reading = PedestalMean_Run_Channel(run=run, pedestal_mean=this_pedestal_mean, channel_id=channel.id)
+			this_reading = PedestalMean_Run_Channel(run=run, value=this_pedestal_mean, channel_id=channel.id)
 			#print this_reading
 			db.session.add(this_reading)
 		db.session.commit()
@@ -195,7 +195,7 @@ class PedestalRMS_Run_Channel(Serializable, RunQuantity, ChannelQuantity, db.Mod
 	value         = db.Column(db.Float)
 
 	def __repr__(self):
-		return "id {}, channel {}, run {} => {}".format(self.id, self.channel, self.run, self.pedestal_rms)
+		return "id {}, channel {}, run {} => {}".format(self.id, self.channel, self.run, self.value)
 		#return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
 
 	# Extract data from DQM histogram
@@ -229,7 +229,7 @@ class PedestalRMS_Run_Channel(Serializable, RunQuantity, ChannelQuantity, db.Mod
 			this_pedestal_rms = hist_pedestal_rms[channel.depth].GetBinContent(xbin, ybin)
 			if this_pedestal_rms == 0: # Zero suppress. This plot monitors drifts, not errors.
 				continue
-			this_reading = PedestalRMS_Run_Channel(run=run, pedestal_rms=this_pedestal_rms, channel_id=channel.id)
+			this_reading = PedestalRMS_Run_Channel(run=run, value=this_pedestal_rms, channel_id=channel.id)
 			#print this_reading
 			db.session.add(this_reading)
 		db.session.commit()
