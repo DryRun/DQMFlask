@@ -32,7 +32,7 @@ def get(quantity_name, max_entries=100):
 
 	# Get data
 	quantity = eval(quantity_name)
-	data = quantity.query.filter_by(channel_filters)
+	data = quantity.query.filter_by(**channel_filters)
 
 	if "min_run" in request.args:
 		data = data.filter(quantity.run >= int(request.args.get("min_run")))
