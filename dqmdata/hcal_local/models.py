@@ -10,13 +10,18 @@ class Serializable(object):
 		blacklist.extend(getattr(self, '_serialize_blacklist', []))
 		result = {}
 		for k,v in self.__dict__.iteritems():
+			print "Key {}".format(k)
 			if k in blacklist:
+				print "\tBlacklist"
 				continue
 			elif isinstance(v, list): #One to Many/Many to Many relationship, add a list of serialized child objects
+				print "\tList"
 				result[k] = [i.as_dict for i in v]
 			elif isinstance(v, db.Model): #One to One relationship, serialize the child and include it
+				print "\t1-1"
 				result[k] = v.as_dict
 			else:
+				print "\tNormal"
 				result[k] = v
 		return ",".join(self.__dict__.keys())
 		return result
