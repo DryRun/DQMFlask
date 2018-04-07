@@ -62,7 +62,6 @@ def get_channels(quantity_name, max_entries=100):
 		data = data.filter(Channel.depth.in_(depth_list))
 	if "subdet" in request.args:
 		data = data.filter(Channel.subdet.in_(request.args.get("subdet").split(",")))
-		print "[debug] data.count() after subdet = {}".format(data.count())
 
 	print "[debug] data.count() = {}".format(data.count())
 	
@@ -78,7 +77,7 @@ def get_channels(quantity_name, max_entries=100):
 		channel_string = Channel.query.filter(Channel.id == channel_id)[0].get_label()
 		data_dict[channel_string] = []
 		channel_labels[channel_id] = channel_string
-	for reading in data:
+	for reading in data.limit(max_entries):
 		data_dict[channel_labels[reading.channel_id]].append([reading.run, reading.value])
 	print "[debug] data_dict = ",
 	print data_dict
