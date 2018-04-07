@@ -18,10 +18,10 @@ def parse_integer_range(intstr):
 		if "-" in this_str:
 			intmin = int(this_str.split("-")[0])
 			intmax = int(this_str.split("-")[1])
-			int_list.extend(range(intmin, intmax+1))
+			intlist.extend(range(intmin, intmax+1))
 		else:
-			int_list.append(int(this_str))
-	return int_list
+			intlist.append(int(this_str))
+	return intlist
 
 @hcal_local.route('/get_channels/<quantity_name>', methods=['GET'])
 def get_channels(quantity_name, max_entries=100):
