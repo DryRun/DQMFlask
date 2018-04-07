@@ -44,7 +44,7 @@ def get_channels(quantity_name, max_entries=100):
 	year = request.args.get("year", default="2018", type=str)
 	emap_version = year2emap[year]
 	quantity = eval(quantity_name)
-	data = quantity.query.filter_by(quantity.channel.emap_version == year2emap[year])
+	data = quantity.query.filter_by(Channel.emap_version == year2emap[year])
 
 	# Filters
 	if "min_run" in request.args:
