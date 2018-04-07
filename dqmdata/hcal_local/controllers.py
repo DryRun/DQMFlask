@@ -11,33 +11,73 @@ hcal_local = Blueprint('hcal_local', __name__, url_prefix='/hcal_local')
 def emap():
 	pass
 
-# Top level "get" route
-@hcal_local.route('/get/<quantity_name>', methods=['GET'])
-def get(quantity_name, max_entries=100):
+# Get individual channel data
+def parse_integer_range(intstr):
+	intlist = []
+	for this_str in intstr.split(","):
+		if "-" in this_str:
+			intmin = int(this_str.split("-")[0])
+			intmax = int(this_str.split("-")[1])
+			int_list.extend(range(intmin, intmax+1))
+		else:
+			int_list.append(int(this_str))
+	return int_list
+
+@hcal_local.route('/get_channels/<quantity_name>', methods=['GET'])
+def get_channels(quantity_name, max_entries=100):
 	valid_quantities = ["PedestalMean_Run_Channel", "PedestalRMS_Run_Channel"]
 	if not quantity_name in valid_quantities:
 		return render_template("400.html")
+	
+	# Emap filter (required)
+	channel_filters["channel.emap_version"] = year2emap[year]
 
-	channel_filter_keys = ["ieta", "iphi", "subdet", "depth"]
-	channel_filters = {}
-	for channel_filter_key in channel_filter_keys:
-		if channel_filter_key in request.args:
-			if channel_filter_key in ["ieta", "iphi", "depth"]:
-				value = int(request.args(channel_filter_key))
-			else:
-				value = request.args(channel_filter_key)
-			channels[channel_filter_key] = value
+	#channel_filter_keys = ["ieta", "iphi", "subdet", "depth"]
+	#for channel_filter_key in channel_filter_keys:
+	#	if channel_filter_key in request.args:
+	#		if channel_filter_key in ["ieta", "iphi", "depth"]:
+	#			# Parse number string of form a,b,c-d,e
+	#			value = int(request.args(channel_filter_key))
+	#		elif channel_filter_key in ["subdet"]:
+	#			value = str(request.args(channel_filter_key))
+	#		channel_filter_keys["channel.{}".format(channel_filter_key)] = value
 
 	# Get data
+	year2emap = {"2017":"2017J", "2018":"2018"}
+	year = request.args.get("year", default="2018", type=str)
+	emap_version = year2emap[year]
 	quantity = eval(quantity_name)
-	data = quantity.query.filter_by(**channel_filters)
+	data = quantity.query.filter_by(quantity.channel.emap_version == year2emap[year])
 
+	# Filters
 	if "min_run" in request.args:
 		data = data.filter(quantity.run >= int(request.args.get("min_run")))
 	if "max_run" in request.args:
 		data = data.filter(quantity.run <= int(request.args.get("max_run")))
+	if "ieta" in request.args:
+		ieta_list = parse_integer_range(request.args.get("ieta"))
+		data = data.filter(quantity.channel.ieta._in(ieta_list))
+	if "iphi" in request.args:
+		iphi_list = parse_integer_range(request.args.get("iphi"))
+		data = data.filter(quantity.channel.iphi._in(iphi_list))
+	if "depth" in request.args:
+		depth_list = parse_integer_range(request.args.get("depth"))
+		data = data.filter(quantity.channel.depth._in(depth_list))
+	if "subdet" in request.args:
+		data = data.filter(quantity.channel.subdet._in(request.args.get("subdet").split(",")))
 	
-	return json.dumps([reading.as_dict for reading in data.limit(max_entries)])
+	# Get channel list
+	channel_ids = data.distinct(quantity.channel_id)
+
+	# Build return data for each channel
+	data_dict = {}
+	for channel_id in channel_ids:
+		channel_string = Channel.query.filter(Channel.id == channel_id)[0].get_label()
+		data_dict[channel_string] = []
+		for reading in data.filter(quantity.channel_id=channel_id):
+			data_dict[channel_string].append([reading.run, reading.value])
+
+	return json.dumps(data_dict)
 
 
 # Custom commands
