@@ -52,6 +52,10 @@ class Channel(Serializable, db.Model):
 	def __repr__(self):
 		return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
 
+	# Short string for plot legends
+	def get_label(self):
+		return "{} | ieta={} | iphi={} | depth={}".format(self.subdet, self.ieta, self.iphi, self.depth)
+
 	@property
 	def as_dict(self):
 		return {"subdet":self.subdet, "ieta":self.ieta, "iphi":self.iphi, "depth":self.depth}
