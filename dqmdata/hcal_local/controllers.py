@@ -74,6 +74,8 @@ def get_channels(quantity_name, max_entries=100):
 	data_dict = {}
 	channel_labels = {}
 	for channel_id in channel_ids:
+		print Channel.query.filter(Channel.id == channel_id)
+		print Channel.query.filter(Channel.id == channel_id)[0]
 		channel_string = Channel.query.filter(Channel.id == channel_id)[0].get_label()
 		data_dict[channel_string] = []
 		channel_labels[channel_id] = channel_string
