@@ -53,15 +53,15 @@ def get_channels(quantity_name, max_entries=100):
 		data = data.filter(quantity.run <= int(request.args.get("max_run")))
 	if "ieta" in request.args:
 		ieta_list = parse_integer_range(request.args.get("ieta"))
-		data = data.filter(Channel.ieta._in(ieta_list))
+		data = data.filter(Channel.ieta.in_(ieta_list))
 	if "iphi" in request.args:
 		iphi_list = parse_integer_range(request.args.get("iphi"))
-		data = data.filter(Channel.iphi._in(iphi_list))
+		data = data.filter(Channel.iphi.in_(iphi_list))
 	if "depth" in request.args:
 		depth_list = parse_integer_range(request.args.get("depth"))
-		data = data.filter(Channel.depth._in(depth_list))
+		data = data.filter(Channel.depth.in_(depth_list))
 	if "subdet" in request.args:
-		data = data.filter(Channel.subdet._in(request.args.get("subdet").split(",")))
+		data = data.filter(Channel.subdet.in_(request.args.get("subdet").split(",")))
 	
 	# Get channel list
 	channel_ids = data.distinct(quantity.channel_id)
