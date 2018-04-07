@@ -62,7 +62,7 @@ def get_channels(quantity_name, max_entries=100):
 		data = data.filter(Channel.depth.in_(depth_list))
 	if "subdet" in request.args:
 		data = data.filter(Channel.subdet.in_(request.args.get("subdet").split(",")))
-
+	data = data.limit(max_entries)
 	print "[debug] data.count() = {}".format(data.count())
 	
 	# Get channel list
