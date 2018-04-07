@@ -45,7 +45,6 @@ def get_channels(quantity_name, max_entries=100):
 	emap_version = year2emap[year]
 	quantity = eval(quantity_name)
 	data = quantity.query.filter(Channel.emap_version == year2emap[year])
-	print "[debug] data.count() after emap = {}".format(data.count())
 
 	# Filters
 	if "min_run" in request.args:
@@ -74,11 +73,13 @@ def get_channels(quantity_name, max_entries=100):
 
 	# Build return data for each channel
 	data_dict = {}
+	channel_labels = {}
 	for channel_id in channel_ids:
 		channel_string = Channel.query.filter(Channel.id == channel_id)[0].get_label()
 		data_dict[channel_string] = []
-		for reading in data.filter(quantity.channel_id == channel_id):
-			data_dict[channel_string].append([reading.run, reading.value])
+		channel_labels[channel_id] = channel_string
+	for reading in data:
+		data_dict[channel_labels[reading.channel_id]].append([reading.run, reading.value])
 	print "[debug] data_dict = ",
 	print data_dict
 
