@@ -45,6 +45,7 @@ def get_channels(quantity_name, max_entries=100):
 	emap_version = year2emap[year]
 	quantity = eval(quantity_name)
 	data = quantity.query.filter(Channel.emap_version == year2emap[year])
+	print "[debug] data.count() after emap = {}".format(data.count())
 
 	# Filters
 	if "min_run" in request.args:
@@ -62,6 +63,7 @@ def get_channels(quantity_name, max_entries=100):
 		data = data.filter(Channel.depth.in_(depth_list))
 	if "subdet" in request.args:
 		data = data.filter(Channel.subdet.in_(request.args.get("subdet").split(",")))
+		print "[debug] data.count() after subdet = {}".format(data.count())
 
 	print "[debug] data.count() = {}".format(data.count())
 	
