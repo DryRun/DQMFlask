@@ -29,9 +29,6 @@ def get_channels(quantity_name, max_entries=100):
 	if not quantity_name in valid_quantities:
 		return render_template("400.html")
 	
-	# Emap filter (required)
-	channel_filters["channel.emap_version"] = year2emap[year]
-
 	#channel_filter_keys = ["ieta", "iphi", "subdet", "depth"]
 	#for channel_filter_key in channel_filter_keys:
 	#	if channel_filter_key in request.args:
