@@ -68,7 +68,7 @@ def get_channels(quantity_name, max_entries=100):
 	print "[debug] data.count() = {}".format(data.count())
 	
 	print "[debug] PRINTING QUERY RESULTS"
-	for reading in data.all():
+	for reading in data.limit(max_entries).all():
 		print reading
 	print "[debug] END PRINTING QUERY RESULTS"
 
