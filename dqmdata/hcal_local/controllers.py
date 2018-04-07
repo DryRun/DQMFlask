@@ -66,7 +66,7 @@ def get_channels(quantity_name, max_entries=100):
 	print "[debug] data.count() = {}".format(data.count())
 	
 	# Get channel list
-	channel_ids = data.distinct(quantity.channel_id)
+	channel_ids = [reading.channel_id for reading in data.distinct(quantity.channel_id)]
 	print "[debug] channel_ids = ",
 	print channel_ids
 
@@ -74,6 +74,8 @@ def get_channels(quantity_name, max_entries=100):
 	data_dict = {}
 	channel_labels = {}
 	for channel_id in channel_ids:
+		print "[debug] channel_id = ",
+		print channel_id
 		channel_string = Channel.query.filter(Channel.id == channel_id).first().get_label()
 		data_dict[channel_string] = []
 		channel_labels[channel_id] = channel_string
