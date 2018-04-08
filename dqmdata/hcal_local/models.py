@@ -158,7 +158,7 @@ class PedestalMean_Run_Channel(Serializable, db.Model):
 	id            = db.Column(db.Integer, primary_key=True)
 	run           = db.Column(db.Integer)
 	value         = db.Column(db.Float)
-	channel_id    = db.Column(db.Integer, db.ForeignKey('Channel.id'))
+	channel_id    = db.Column(db.Integer, db.ForeignKey('channel.id'))
 
 	def __repr__(self):
 		return "id {}, channel {}, run {} => {}".format(self.id, self.channel, self.run, self.value)
@@ -204,7 +204,7 @@ class PedestalRMS_Run_Channel(Serializable, db.Model):
 	id            = db.Column(db.Integer, primary_key=True)
 	run           = db.Column(db.Integer)
 	value         = db.Column(db.Float)
-	channel_id    = db.Column(db.Integer, db.ForeignKey('Channel.id'))
+	channel_id    = db.Column(db.Integer, db.ForeignKey('channel.id'))
 
 	def __repr__(self):
 		return "id {}, channel {}, run {} => {}".format(self.id, self.channel, self.run, self.value)
