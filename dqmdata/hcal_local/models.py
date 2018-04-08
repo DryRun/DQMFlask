@@ -36,6 +36,10 @@ class Channel(Serializable, db.Model):
 	fiber_channel = db.Column(db.SmallInteger, nullable=False)
 	emap_version  = db.Column(db.String(8), nullable=False)
 
+	# Backrefs
+    pedestal_mean_run_channel = db.relationship('PedestalMean_Run_Channel', backref='channel', lazy='dynamic')
+    pedestal_rms_run_channel = db.relationship('PedestalRMS_Run_Channel', backref='channel', lazy='dynamic')
+
 	def __init__(self, subdet, ieta, iphi, depth, crate, slot, dcc, spigot, fiber, fiber_channel, emap_version):
 		self.subdet = subdet
 		self.ieta = ieta
@@ -60,25 +64,25 @@ class Channel(Serializable, db.Model):
 	def as_dict(self):
 		return {"subdet":self.subdet, "ieta":self.ieta, "iphi":self.iphi, "depth":self.depth}
 
-# Mixins
-class RunQuantity(object):
-	run = db.Column(db.Integer, nullable=False)
-	#__abstract__ = True
+# Mixins: currently disfavored because David doesn't understand how to make mixin foreignkeys work
+#class RunQuantity(object):
+#	run = db.Column(db.Integer, nullable=False)
+#	#__abstract__ = True
 
-class ChannelQuantity(object):
-	@declared_attr
-	def channel_id(cls):
-		return db.Column(db.Integer, db.ForeignKey("channel.id"))
-
-	@declared_attr
-	def channel(cls):
-		return db.relationship(Channel, backref=cls.__name__, lazy="joined")
-
-	#@declared_attr
-	#def channel(cls):
-	#	return db.relationship("channel")
-
-	#__abstract__ = True
+#class ChannelQuantity(object):
+#	@declared_attr
+#	def channel_id(cls):
+#		return db.Column(db.Integer, db.ForeignKey("channel.id"))
+#
+#	@declared_attr
+#	def channel(cls):
+#		return db.relationship(Channel, backref=cls.__name__, lazy="joined")
+#
+#	#@declared_attr
+#	#def channel(cls):
+#	#	return db.relationship("channel")
+#
+#	#__abstract__ = True
 
 class SubdetQuantity(object):
 	#SUBDET_CHOICES = (
@@ -149,10 +153,12 @@ def check_overwrite(quantity, run, emap_version, overwrite):
 
 
 # Data models
-class PedestalMean_Run_Channel(Serializable, RunQuantity, ChannelQuantity, db.Model):
+class PedestalMean_Run_Channel(Serializable, db.Model):
 	__tablename__ = 'pedestal_mean_run_channel'
 	id            = db.Column(db.Integer, primary_key=True)
+	run           = db.Column(db.Integer)
 	value         = db.Column(db.Float)
+	channel_id    = db.Column(db.Integer, db.ForeignKey('Channel.id'))
 
 	def __repr__(self):
 		return "id {}, channel {}, run {} => {}".format(self.id, self.channel, self.run, self.value)
@@ -193,10 +199,12 @@ class PedestalMean_Run_Channel(Serializable, RunQuantity, ChannelQuantity, db.Mo
 			db.session.add(this_reading)
 		db.session.commit()
 
-class PedestalRMS_Run_Channel(Serializable, RunQuantity, ChannelQuantity, db.Model):
+class PedestalRMS_Run_Channel(Serializable, db.Model):
 	__tablename__ = 'pedestal_rms_run_channel'
 	id            = db.Column(db.Integer, primary_key=True)
+	run           = db.Column(db.Integer)
 	value         = db.Column(db.Float)
+	channel_id    = db.Column(db.Integer, db.ForeignKey('Channel.id'))
 
 	def __repr__(self):
 		return "id {}, channel {}, run {} => {}".format(self.id, self.channel, self.run, self.value)
