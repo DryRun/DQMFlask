@@ -225,7 +225,7 @@ class PedestalRMS_Run_Channel(Serializable, db.Model):
 		print "[PedestalRMS_Run_Channel::extract] Extracting for run {}".format(run)
 
 		# Check that this run is not already in DB
-		if not check_overwrite(PedestalRMS_Run_Channel, run, emap_version, overwrite=False):
+		if not check_overwrite(PedestalRMS_Run_Channel, run, emap_version, overwrite=overwrite):
 			print "[PedestalRMS_Run_Channel::extract] INFO : Failed overwrite check for run {}".format(run)
 			return
 
