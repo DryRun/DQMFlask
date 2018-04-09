@@ -153,6 +153,7 @@ def delete_emap(version):
 @click.option('--emap')
 @click.option('--overwrite', is_flag=True)
 def extract(quantity, run, emap, overwrite):
+	print "[debug] At start of extract(), query.count = {}".format(eval(quantity).query.count())
 	quantity_object = eval(quantity)()
 	quantity_object.extract(run, emap, overwrite=overwrite)
 
