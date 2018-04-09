@@ -70,7 +70,7 @@ class Channel(Serializable, db.Model):
 			"PedestalRMS_Run_Channel":pedestal_rms_run_channel
 	}
 	def get_backref(self, cls):
-		return backref_dict[cls.__name__]
+		return self.backref_dict[cls.__name__]
 
 
 
