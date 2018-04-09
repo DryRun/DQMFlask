@@ -179,7 +179,7 @@ class PedestalMean_Run_Channel(Serializable, db.Model):
 		print "[PedestalMean_Run_Channel::extract] Extracting for run {}".format(run)
 
 		# Check that this run is not already in DB
-		if not check_overwrite(PedestalMean_Run_Channel, run, emap_version, overwrite=False):
+		if not check_overwrite(PedestalMean_Run_Channel, run, emap_version, overwrite=overwrite):
 			return
 
 		# Get data
