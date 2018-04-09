@@ -34,7 +34,7 @@ def get_channels(quantity_name, max_entries=100, max_channels=100):
 		return render_template("400.html")
 	quantity = eval(quantity_name)
 
-	print "[debug] {} has {} entries".format(quantity_name, quantity.query.count())
+	print "[debug] {} has {} entries".format(quantity_name, quantity.query.countZ)
 
 	# Get channels
 	year2emap = {"2017":"2017J", "2018":"2018"}
@@ -158,6 +158,7 @@ def extract(quantity, run, emap, overwrite):
 	print "[debug] At start of extract(), query.count = {}".format(eval(quantity).query.count())
 	quantity_object = eval(quantity)()
 	quantity_object.extract(run, emap, overwrite=overwrite)
+	print "[debug] At end of extract(), query.count = {}".format(eval(quantity).query.count())
 
 @app.cli.command(with_appcontext=True)
 @click.option('--quantity')
