@@ -151,20 +151,13 @@ def detid_to_histbins(subdet, ieta, iphi):
 	return xbin, ybin
 
 def check_overwrite(quantity, run, emap_version, overwrite):
-	print "[debug] check_overwrite for run {}".format(run)
 	q = quantity.query.filter_by(run=run)
-	print "[debug] Query for this run = ..."
-	print q
-	print "[debug] ... end of query"
 	if q.count() > 0:
 		if not overwrite:
 			print "[check_overwrite] ERROR : Run {} already exists in DB for quantity {}! Specify overwrite to overwrite.".format(run, quantity)
 			return False
 		else:
 			for reading in q.all():
-				print "[debug] Deleting reading ..."
-				print reading
-				print "[debug] ...end of reading"
 				db.session.delete(reading)
 			db.session.commit()
 	return True

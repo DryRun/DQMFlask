@@ -34,6 +34,8 @@ def get_channels(quantity_name, max_entries=100, max_channels=100):
 		return render_template("400.html")
 	quantity = eval(quantity_name)
 
+	print "[debug] {} has {} entries".format(quantity_name, quantity.query.count())
+
 	# Get channels
 	year2emap = {"2017":"2017J", "2018":"2018"}
 	year = request.args.get("year", default="2018", type=str)
