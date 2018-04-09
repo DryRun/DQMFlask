@@ -24,7 +24,7 @@ def parse_integer_range(intstr):
 	return intlist
 
 @hcal_local.route('/get_channels/<quantity_name>', methods=['GET'])
-def get_channels(quantity_name, max_entries=100):
+def get_channels(quantity_name, max_entries=100, max_channels=100):
 	valid_quantities = ["PedestalMean_Run_Channel", "PedestalRMS_Run_Channel"]
 	if not quantity_name in valid_quantities:
 		return render_template("400.html")
@@ -39,58 +39,41 @@ def get_channels(quantity_name, max_entries=100):
 	#			value = str(request.args(channel_filter_key))
 	#		channel_filter_keys["channel.{}".format(channel_filter_key)] = value
 
-	# Get data
+	# Get channels
+	q_channels = Channel.query.filter(Channel.emap_version=year2emap[year])
 	year2emap = {"2017":"2017J", "2018":"2018"}
 	year = request.args.get("year", default="2018", type=str)
 	emap_version = year2emap[year]
-	quantity = eval(quantity_name)
-	data = quantity.query.filter(Channel.emap_version == year2emap[year])
+	q_channels = Channel.query.filter(Channel.emap_version=emap_version)
 
-	# Filters
-	print "[debug] request.args = ",
-	print request.args
-	if "min_run" in request.args:
-		data = data.filter(quantity.run >= int(request.args.get("min_run")))
-	if "max_run" in request.args:
-		data = data.filter(quantity.run <= int(request.args.get("max_run")))
 	if "ieta" in request.args:
 		ieta_list = parse_integer_range(request.args.get("ieta"))
-		data = data.filter(Channel.ieta.in_(ieta_list))
+		q_channels = q_channels.filter(Channel.ieta.in_(ieta_list))
 	if "iphi" in request.args:
 		iphi_list = parse_integer_range(request.args.get("iphi"))
-		data = data.filter(Channel.iphi.in_(iphi_list))
+		q_channels = q_channels.filter(Channel.iphi.in_(iphi_list))
 	if "depth" in request.args:
 		depth_list = parse_integer_range(request.args.get("depth"))
-		data = data.filter(Channel.depth.in_(depth_list))
+		q_channels = q_channels.filter(Channel.depth.in_(depth_list))
 	if "subdet" in request.args:
-		data = data.filter(Channel.subdet.in_(request.args.get("subdet").split(",")))
-	#data = data.limit(max_entries)
-	print "[debug] data = ",
-	print data
-	
-	print "[debug] PRINTING QUERY RESULTS"
-	for reading in data.limit(max_entries).all():
-		print reading
-	print "[debug] END PRINTING QUERY RESULTS"
+		q_channels = q_channels.filter(Channel.subdet.in_(request.args.get("subdet").split(",")))
+	q_channels = q_channels.limit(max_channels)
+	print "[get_channels] Query returned {} channels".format(q_channels.count())
 
-	# Get channel list
-	channel_ids = [reading.channel_id for reading in data.distinct(quantity.channel_id).all()]
-	print "[debug] channel_ids = ",
-	print channel_ids
+	return_data = {}
+	for channel in q_channels.all():
+		# Return data key = legend entry for channel
+		channel_label = channel.get_label()
+		quantity = eval(quantity_name)
+		q_data = data.query(quantity.channel=channel).
+		if "min_run" in request.args:
+			q_data = q_data.filter(quantity.run >= int(request.args.get("min_run")))
+		if "max_run" in request.args:
+			q_data = q_data.filter(quantity.run <= int(request.args.get("max_run")))
+		q_data = q_data.limit(max_entries)
+		return_data[channel_label] = [[reading.run, reading.value] for reading in q_data.all()]
 
-	# Build return data for each channel
-	data_dict = {}
-	channel_labels = {}
-	for channel_id in channel_ids:
-		channel_string = Channel.query.filter(Channel.id == channel_id).first().get_label()
-		print channel_string
-		data_dict[channel_string] = []
-		channel_labels[channel_id] = channel_string
-	for reading in data.all():
-		print reading
-		data_dict[channel_labels[reading.channel_id]].append([reading.run, reading.value])
-
-	return json.dumps(data_dict)
+	return json.dumps(return_data)
 
 
 # Custom commands
