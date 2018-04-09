@@ -163,8 +163,6 @@ def extract(quantity, run, emap, overwrite):
 @app.cli.command(with_appcontext=True)
 @click.option('--quantity')
 @click.option('--run')
-@click.option('--emap')
-@click.option('--overwrite', is_flag=True)
 def delete(quantity, run):
 	counter = 0
 	for reading in eval(quantity).query.filter_by(run=run):
