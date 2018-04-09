@@ -40,6 +40,11 @@ class Channel(Serializable, db.Model):
 	pedestal_mean_run_channel = db.relationship('PedestalMean_Run_Channel', backref='channel', lazy='dynamic')
 	pedestal_rms_run_channel = db.relationship('PedestalRMS_Run_Channel', backref='channel', lazy='dynamic')
 
+	backref_dict = {
+		PedestalMean_Run_Channel:pedestal_mean_run_channel, 
+		PedestalRMS_Run_Channel:pedestal_rms_run_channel
+	}
+
 	def __init__(self, subdet, ieta, iphi, depth, crate, slot, dcc, spigot, fiber, fiber_channel, emap_version):
 		self.subdet = subdet
 		self.ieta = ieta

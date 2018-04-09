@@ -28,23 +28,13 @@ def get_channels(quantity_name, max_entries=100, max_channels=100):
 	valid_quantities = ["PedestalMean_Run_Channel", "PedestalRMS_Run_Channel"]
 	if not quantity_name in valid_quantities:
 		return render_template("400.html")
-	
-	#channel_filter_keys = ["ieta", "iphi", "subdet", "depth"]
-	#for channel_filter_key in channel_filter_keys:
-	#	if channel_filter_key in request.args:
-	#		if channel_filter_key in ["ieta", "iphi", "depth"]:
-	#			# Parse number string of form a,b,c-d,e
-	#			value = int(request.args(channel_filter_key))
-	#		elif channel_filter_key in ["subdet"]:
-	#			value = str(request.args(channel_filter_key))
-	#		channel_filter_keys["channel.{}".format(channel_filter_key)] = value
+	quantity = eval(quantity_name)
 
 	# Get channels
-	q_channels = Channel.query.filter(Channel.emap_version=year2emap[year])
 	year2emap = {"2017":"2017J", "2018":"2018"}
 	year = request.args.get("year", default="2018", type=str)
 	emap_version = year2emap[year]
-	q_channels = Channel.query.filter(Channel.emap_version=emap_version)
+	q_channels = Channel.query.filter(Channel.emap_version==emap_version)
 
 	if "ieta" in request.args:
 		ieta_list = parse_integer_range(request.args.get("ieta"))
@@ -64,8 +54,7 @@ def get_channels(quantity_name, max_entries=100, max_channels=100):
 	for channel in q_channels.all():
 		# Return data key = legend entry for channel
 		channel_label = channel.get_label()
-		quantity = eval(quantity_name)
-		q_data = data.query(quantity.channel=channel)
+		q_data = channel.backref_dict[quantity].query(quantity.channel==channel)
 		if "min_run" in request.args:
 			q_data = q_data.filter(quantity.run >= int(request.args.get("min_run")))
 		if "max_run" in request.args:
