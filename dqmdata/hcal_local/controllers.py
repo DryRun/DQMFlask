@@ -63,7 +63,10 @@ def get_channels(quantity_name, max_entries=100, max_channels=100):
 			q_data = q_data.filter(quantity.run >= int(request.args.get("min_run")))
 		if "max_run" in request.args:
 			q_data = q_data.filter(quantity.run <= int(request.args.get("max_run")))
-		q_data = q_data.limit(max_entries)
+		#q_data = q_data.limit(max_entries)
+		print "[debug] q_data = ",
+		print q_data
+		print "[debug] q_data.count() = {}".format(q_data.count())
 		return_data[channel_label] = [[reading.run, reading.value] for reading in q_data.all()]
 
 	return json.dumps(return_data)
