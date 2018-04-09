@@ -157,7 +157,7 @@ def check_overwrite(quantity, run, emap_version, overwrite):
 			print "[check_overwrite] ERROR : Run {} already exists in DB for quantity {}! Specify overwrite to overwrite.".format(run, quantity)
 			return False
 		else:
-			for reading in quantity.query.filter(run==run):
+			for reading in quantity.query.filter(run==run).all():
 				print "[debug] Deleting reading ",
 				print reading
 				db.session.delete(reading)
