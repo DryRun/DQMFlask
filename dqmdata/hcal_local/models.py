@@ -64,6 +64,16 @@ class Channel(Serializable, db.Model):
 	def as_dict(self):
 		return {"subdet":self.subdet, "ieta":self.ieta, "iphi":self.iphi, "depth":self.depth}
 
+	# Backref
+	backref_dict = {
+			"PedestalMean_Run_Channel":pedestal_mean_run_channel, 
+			"PedestalRMS_Run_Channel":pedestal_rms_run_channel
+	}
+	def get_backref(self, cls):
+		return backref_dict[cls.__name__]
+
+
+
 # Mixins: currently disfavored because David doesn't understand how to make mixin foreignkeys work
 #class RunQuantity(object):
 #	run = db.Column(db.Integer, nullable=False)
@@ -245,11 +255,4 @@ class PedestalRMS_Run_Channel(Serializable, db.Model):
 			#print this_reading
 			db.session.add(this_reading)
 		db.session.commit()
-
-# Create a dictionary for lookup from channel
-Channel.backref_dict = {
-		PedestalMean_Run_Channel:pedestal_mean_run_channel, 
-		PedestalRMS_Run_Channel:pedestal_rms_run_channel
-}
-
 
