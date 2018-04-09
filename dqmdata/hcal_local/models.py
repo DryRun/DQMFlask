@@ -65,12 +65,12 @@ class Channel(Serializable, db.Model):
 		return {"subdet":self.subdet, "ieta":self.ieta, "iphi":self.iphi, "depth":self.depth}
 
 	# Backref
-	backref_dict = {
-			"PedestalMean_Run_Channel":pedestal_mean_run_channel, 
-			"PedestalRMS_Run_Channel":pedestal_rms_run_channel
-	}
-	def get_backref(self, cls):
-		return self.backref_dict[cls.__name__]
+	#backref_dict = {
+	#		"PedestalMean_Run_Channel":pedestal_mean_run_channel, 
+	#		"PedestalRMS_Run_Channel":pedestal_rms_run_channel
+	#}
+	#def get_backref(self, cls):
+	#	return self.backref_dict[cls.__name__]
 
 
 

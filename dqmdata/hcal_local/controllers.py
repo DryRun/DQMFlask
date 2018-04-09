@@ -26,6 +26,10 @@ def parse_integer_range(intstr):
 @hcal_local.route('/get_channels/<quantity_name>', methods=['GET'])
 def get_channels(quantity_name, max_entries=100, max_channels=100):
 	valid_quantities = ["PedestalMean_Run_Channel", "PedestalRMS_Run_Channel"]
+	backrefs = {
+		"PedestalMean_Run_Channel":"pedestal_mean_run_channel",
+		"PedestalRMS_Run_Channel":"pedestal_rms_run_channel"
+	}
 	if not quantity_name in valid_quantities:
 		return render_template("400.html")
 	quantity = eval(quantity_name)
@@ -54,8 +58,7 @@ def get_channels(quantity_name, max_entries=100, max_channels=100):
 	for channel in q_channels.all():
 		# Return data key = legend entry for channel
 		channel_label = channel.get_label()
-		print channel.get_backref(quantity)
-		q_data = channel.get_backref(quantity).filter(quantity.channel==channel)
+		q_data = getattr(channel, backrefs[quantity_name]).filter(quantity.channel==channel)
 		if "min_run" in request.args:
 			q_data = q_data.filter(quantity.run >= int(request.args.get("min_run")))
 		if "max_run" in request.args:
