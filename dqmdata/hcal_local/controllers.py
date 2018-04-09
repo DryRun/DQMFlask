@@ -55,7 +55,7 @@ def get_channels(quantity_name, max_entries=100, max_channels=100):
 		# Return data key = legend entry for channel
 		channel_label = channel.get_label()
 		print channel.get_backref(quantity)
-		q_data = channel.get_backref(quantity).query(quantity.channel==channel)
+		q_data = channel.get_backref(quantity).filter(quantity.channel==channel)
 		if "min_run" in request.args:
 			q_data = q_data.filter(quantity.run >= int(request.args.get("min_run")))
 		if "max_run" in request.args:
