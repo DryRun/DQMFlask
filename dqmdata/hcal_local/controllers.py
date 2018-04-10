@@ -54,17 +54,17 @@ def get_channels(quantity_name, max_entries=100, max_channels=100):
 	q_channels = q_channels.limit(max_channels)
 	print "[get_channels] Query returned {} channels".format(q_channels.count())
 
-	return_data = {}
+	return_data = []
 	for channel in q_channels.all():
 		# Return data key = legend entry for channel
-		channel_label = channel.get_label()
 		q_data = getattr(channel, backrefs[quantity_name])
 		if "min_run" in request.args:
 			q_data = q_data.filter(quantity.run >= int(request.args.get("min_run")))
 		if "max_run" in request.args:
 			q_data = q_data.filter(quantity.run <= int(request.args.get("max_run")))
-		#q_data = q_data.limit(max_entries)
-		return_data[channel_label] = [[reading.run, reading.value] for reading in q_data.all()]
+		q_data = q_data.order_by(quantity.run)
+		q_data = q_data.limit(max_entries)
+		return_data.append({"name":channel.get_label(), "data":[[reading.run, reading.value] for reading in q_data.all()]})
 
 	return json.dumps(return_data)
 
