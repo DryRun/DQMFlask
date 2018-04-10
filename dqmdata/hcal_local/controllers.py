@@ -5,6 +5,24 @@ from dqmdata import db
 from dqmdata.hcal_local.models import *
 import json
 
+# Support jsonp
+import json
+from functools import wraps
+from flask import redirect, request, current_app
+
+def jsonpify(f):
+    """Wraps JSONified output for JSONP"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        callback = request.args.get('callback', False)
+        if callback:
+            content = str(callback) + '(' + str(f().data) + ')'
+            return current_app.response_class(content, mimetype='application/json')
+        else:
+            return f(*args, **kwargs)
+    return decorated_function
+
+
 hcal_local = Blueprint('hcal_local', __name__, url_prefix='/hcal_local')
 
 @hcal_local.route('/emap/', methods=['GET'])
@@ -24,6 +42,7 @@ def parse_integer_range(intstr):
 	return intlist
 
 @hcal_local.route('/get_channels/<quantity_name>', methods=['GET'])
+@jsonpifys
 def get_channels(quantity_name, max_entries=100, max_channels=100):
 	valid_quantities = ["PedestalMean_Run_Channel", "PedestalRMS_Run_Channel"]
 	backrefs = {
