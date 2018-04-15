@@ -46,4 +46,3 @@ def index():
 # This will create the database file using SQLAlchemy
 #db.create_all() 
 #
-
