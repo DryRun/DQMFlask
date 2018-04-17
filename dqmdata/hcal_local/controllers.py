@@ -42,7 +42,7 @@ def parse_integer_range(intstr):
 	return intlist
 
 @hcal_local.route('/get_channels/<quantity_name>', methods=['GET'])
-@jsonpifys
+@jsonpify
 def get_channels(quantity_name, max_entries=100, max_channels=100):
 	valid_quantities = ["PedestalMean_Run_Channel", "PedestalRMS_Run_Channel"]
 	backrefs = {
