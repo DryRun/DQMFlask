@@ -6,6 +6,10 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
 def create_app():
+	# Import a module / component using its blueprint handler variable (hcal_local)
+	from dqmdata.common.controllers import common as common
+	from dqmdata.hcal_local.controllers import hcal_local as hcal_local
+
 	# Define the WSGI application object
 	app = Flask(__name__)
 
@@ -27,11 +31,6 @@ def create_app():
 	@app.errorhandler(404)
 	def not_found(error):
 	    return render_template('templates/404.html'), 404
-
-	# Import a module / component using its blueprint handler variable (hcal_local)
-	from dqmdata.common.controllers import common as common
-	from dqmdata.hcal_local.controllers import hcal_local as hcal_local
-
 
 	@app.route('/')
 	@app.route('/index.html')
