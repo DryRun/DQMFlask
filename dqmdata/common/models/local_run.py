@@ -40,7 +40,7 @@ class LocalRun(db.Model):
 		this_run.run = run
 
 		# Run info DB parameters
-		runinfo = query_runinfo(run, keys=["DQM_TASK", "LOCAL_RUNKEY_SELECTED", "HCAL_TIME_OF_FM_START", "MASTERSNIPPET_SELECTED", "EventsRequested"])
+		runinfo = self.query_runinfo(run, keys=["DQM_TASK", "LOCAL_RUNKEY_SELECTED", "HCAL_TIME_OF_FM_START", "MASTERSNIPPET_SELECTED", "EventsRequested"])
 		# Time example: 2018-06-21 15:40:22 CEST
 		start_time = datetime.strptime(runinfo["HCAL_TIME_OF_FM_START"], '%Y-%m-%d %H:%M:%S %Z')
 		this_run.dqm_task = runinfo["DQM_TASK"]
@@ -49,7 +49,7 @@ class LocalRun(db.Model):
 		this_run.events = int(runinfo["EventsRequested"])
 
 		# Luminosity
-		this_run.ytd_lumi = get_ytd_lumi(run, overwrite_lumi_cache=False)
+		this_run.ytd_lumi = self.get_ytd_lumi(run, overwrite_lumi_cache=False)
 
 		if not test:
 			db.session.add(this_run)
