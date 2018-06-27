@@ -3,9 +3,8 @@ import pickle
 import re
 import urllib2
 from x509auth import *
+from dqmdata.common.localization import cache_directory
 from ROOT import TBufferFile, TH1F, TProfile, TProfile2D, TH1F, TH2F
-
-cache_directory = "/afs/cern.ch/user/c/cmshcaldqm/DQMFlaskDeploy/cache"
 
 def convert_json_to_root(json_data):
 	return_dict = {}
