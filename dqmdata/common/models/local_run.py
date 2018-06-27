@@ -3,7 +3,7 @@ from datetime import datetime
 from dqmdata import db
 from dqmdata.common.localization import cache_directory
 import requests
-import beautifulsoup as soup
+import beautifulsoup4 as soup
 import subprocess
 
 
