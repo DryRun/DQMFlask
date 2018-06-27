@@ -24,13 +24,13 @@ class LocalRun:
 
 	def add_run(self, run, overwrite=False, test=False ):
 		# Check if run exists
-		q = Run.query.filter(Run.run==run)
+		q = LocalRun.query.filter(LocalRun.run==run)
 		if q.counter() > 0:
 			if not overwrite:
-				print "[Run::add_run] WARNING : Run {} already exists in db. Use overwrite=True to overwrite."
+				print "[LocalRun::add_run] WARNING : Run {} already exists in db. Use overwrite=True to overwrite."
 				return
 			else:
-				print "[Run::add_run] INFO : Deleting run {} from db.".format(run)
+				print "[LocalRun::add_run] INFO : Deleting run {} from db.".format(run)
 				for entry in q.all():
 					db.session.delete(entry)
 				db.session.commit()
