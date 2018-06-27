@@ -25,7 +25,7 @@ class LocalRun(db.Model):
 	def add_run(self, run, overwrite=False, test=False ):
 		# Check if run exists
 		q = LocalRun.query.filter(LocalRun.run==run)
-		if q.counter() > 0:
+		if q.count() > 0:
 			if not overwrite:
 				print "[LocalRun::add_run] WARNING : Run {} already exists in db. Use overwrite=True to overwrite."
 				return
