@@ -170,7 +170,8 @@ def check_overwrite(quantity, run, emap_version, overwrite):
 class PedestalMean_Run_Channel(Serializable, db.Model):
 	__tablename__ = 'pedestal_mean_run_channel'
 	id            = db.Column(db.Integer, primary_key=True)
-	run           = db.Column(db.Integer)
+	run           = db.Column(db.Integer, db.ForeignKey('local_run.run'))
+	#run          = db.Column(db.Integer)
 	value         = db.Column(db.Float)
 	channel_id    = db.Column(db.Integer, db.ForeignKey('channel.id'))
 
@@ -216,7 +217,8 @@ class PedestalMean_Run_Channel(Serializable, db.Model):
 class PedestalRMS_Run_Channel(Serializable, db.Model):
 	__tablename__ = 'pedestal_rms_run_channel'
 	id            = db.Column(db.Integer, primary_key=True)
-	run           = db.Column(db.Integer)
+	run           = db.Column(db.Integer, db.ForeignKey('local_run.run'))
+	#run           = db.Column(db.Integer)
 	value         = db.Column(db.Float)
 	channel_id    = db.Column(db.Integer, db.ForeignKey('channel.id'))
 

@@ -7,8 +7,8 @@ import bs4 as soup
 import subprocess
 
 
-class LocalRun:
-	__tablename__ = "run"
+class LocalRun(db.Model):
+	__tablename__ = "local_run"
 	run                    = db.Column(db.Integer, primary_key=True)
 	start_time             = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	ytd_lumi               = db.Column(db.Float)
