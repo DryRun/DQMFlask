@@ -2,8 +2,11 @@
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for, current_app
 from dqmdata import db
-from dqmdata.hcal_local.models import *
-import json
+
+# Import models
+from dqmdata.hcal_local.models.common import Channel
+from dqmdata.hcal_local.models.pedestalmean_run_channel import PedestalMean_Run_Channel
+from dqmdata.hcal_local.models.pedestalrms_run_channel import PedestalRMS_Run_Channel
 
 # Support jsonp
 import json

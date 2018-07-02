@@ -1,5 +1,6 @@
 import os
 import pickle
+from dqmdata.common.localization import *
 from dqmdata.common.dqmio_common import download_dqm_json_object, convert_json_to_root, get_dqm_json_cachepath
 
 # https://cmsweb.cern.ch/dqm/hcal-online/data/json/archive/311043/PEDESTAL/Commissioning2018/DQMIO/Hcal/PedestalTask/Mean/depth
@@ -23,8 +24,12 @@ def load_dqm_object(run, dataset, rootpath, force_download=False):
 
 	return root_data
 
+def load_sipm_gains(run):
+	f = TFile("{}/SiPMGain/r{}.root".format(cache_directory, run), "READ")
+	t = f.Get("SiPMGainAnalysis/gains")
+	for 
+
 if __name__ == "__main__":
 	# Test loading DQM object
 	print load_dqm_object(311043, "PEDESTAL/Commissioning2018/DQMIO", "Hcal/PedestalTask/Mean/depth")
 	print "Done."  
-	
