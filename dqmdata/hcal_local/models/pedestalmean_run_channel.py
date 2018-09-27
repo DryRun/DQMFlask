@@ -1,7 +1,7 @@
 import sys
 from dqmdata import db
 from dqmdata.hcal_local.dqmio import load_dqm_object
-from dqmdata.hcal_local.common import *
+from dqmdata.hcal_local.models.common import *
 
 class PedestalMean_Run_Channel(Serializable, db.Model):
 	__tablename__ = 'pedestal_mean_run_channel'
