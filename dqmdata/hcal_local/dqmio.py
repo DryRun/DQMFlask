@@ -24,10 +24,11 @@ def load_dqm_object(run, dataset, rootpath, force_download=False):
 
 	return root_data
 
+# Get TFile and TTree containing SiPM gains
 def load_sipm_gains(run):
 	f = TFile("{}/SiPMGain/r{}.root".format(cache_directory, run), "READ")
 	t = f.Get("SiPMGainAnalysis/gains")
-	for 
+	return f, t
 
 if __name__ == "__main__":
 	# Test loading DQM object
