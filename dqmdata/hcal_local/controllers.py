@@ -151,8 +151,6 @@ def process_emap(version, path):
 			fiber_channel = fiber_channel,
 			emap_version  = version
 			)
-		print line
-		print channel.id
 		db.session.add(channel)
 		if counter % 200:
 			db.session.flush()

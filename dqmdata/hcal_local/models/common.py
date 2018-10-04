@@ -52,7 +52,7 @@ class Channel(Serializable, db.Model):
 		self.fiber         = fiber
 		self.fiber_channel = fiber_channel
 		self.emap_version  = emap_version
-		self.id            = hash((subdet, ieta, iphi, depth, emap_version))
+		self.id            = hash((subdet, str(ieta), iphi, depth, emap_version)) # NOTE: python has the unfortunate feature hash(-1) == hash(-2). So here, we convert ieta to a string first.
 
 	def __repr__(self):
 		return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
