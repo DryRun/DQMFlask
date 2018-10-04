@@ -110,7 +110,7 @@ from dqmdata import app
 @click.option('--version')
 @click.option('--path')
 def process_emap(version, path):
-	from models import Channel
+	from models.common import Channel
 	nlines = mapcount(path)
 	print_every = int(math.floor(nlines / 20))
 	emap = open(path, 'r')
