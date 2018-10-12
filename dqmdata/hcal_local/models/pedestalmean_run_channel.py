@@ -7,9 +7,8 @@ class PedestalMean_Run_Channel(Serializable, db.Model):
 	__tablename__ = 'pedestal_mean_run_channel'
 	id            = db.Column(db.Integer, primary_key=True)
 	run           = db.Column(db.Integer, db.ForeignKey('local_run.run'))
-	#run          = db.Column(db.Integer)
-	value         = db.Column(db.Float)
 	channel_id    = db.Column(db.Integer, db.ForeignKey('channel.id'))
+	value         = db.Column(db.Float)
 
 	def __repr__(self):
 		return "id {}, channel {}, run {} => {}".format(self.id, self.channel, self.run, self.value)
