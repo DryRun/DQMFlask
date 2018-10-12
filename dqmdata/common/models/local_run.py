@@ -1,9 +1,10 @@
+import os
 import sys
 from datetime import datetime
 from dqmdata import db
 from dqmdata.common.localization import cache_directory
 import requests
-import bs4 as soup
+from bs4 import BeautifulSoup
 import subprocess
 
 def add_run(run, overwrite=False, test=False ):
@@ -24,7 +25,7 @@ def add_run(run, overwrite=False, test=False ):
 	this_run.run = run
 
 	# Run info DB parameters
-	runinfo = self.query_runinfo(run, keys=["DQM_TASK", "LOCAL_RUNKEY_SELECTED", "HCAL_TIME_OF_FM_START", "MASTERSNIPPET_SELECTED", "EventsRequested"])
+	runinfo = this_run.query_runinfo(run, keys=["DQM_TASK", "LOCAL_RUNKEY_SELECTED", "HCAL_TIME_OF_FM_START", "MASTERSNIPPET_SELECTED", "EventsRequested"])
 	# Time example: 2018-06-21 15:40:22 CEST
 	start_time = datetime.strptime(runinfo["HCAL_TIME_OF_FM_START"], '%Y-%m-%d %H:%M:%S %Z')
 	this_run.dqm_task = runinfo["DQM_TASK"]
@@ -33,7 +34,7 @@ def add_run(run, overwrite=False, test=False ):
 	this_run.events = int(runinfo["EventsRequested"])
 
 	# Luminosity
-	this_run.ytd_lumi = self.get_ytd_lumi(run, overwrite_lumi_cache=False)
+	this_run.ytd_lumi = this_run.get_ytd_lumi(run, overwrite_lumi_cache=False)
 
 	if not test:
 		db.session.add(this_run)
@@ -57,27 +58,32 @@ class LocalRun(db.Model):
 	def __repr__(self):
 		return str(self.run)
 
-	def query_runinfo(self, run, keys=["DQM_TASK", "LOCAL_RUNKEY_SELECTED", "HCAL_TIME_OF_FM_START", "MASTERSNIPPET_SELECTED", "EventsRequested"]):
+	def query_runinfo(self, run, keys=["DQM_TASK", "LOCAL_RUNKEY_SELECTED", "HCAL_TIME_OF_FM_START", "MASTERSNIPPET_SELECTED", "EventsRequested"], overwrite_runinfo_cache=True):
 		# Alternative idea: sql query. This doesn't work on the VM, because the DB can't be found... might work with a tunnel, but that's annoying.
 		# SQL query for runinfo DB.
 		# sqlplus -S cms_hcl_runinfo/run2009info@cms_rcms @/WBM/sql_templates/query.sql STRING_VALUE CMS.HCAL%:LOCAL_RUN_KEY runnumber
 		
-		runinfo_url = "https://cmswbm.cern.ch/cmsdb/servlet/RunParameters?RUN={}&FORMAT=XML"
+		runinfo_url = "https://cmswbm.cern.ch/cmsdb/servlet/RunParameters?RUN={}&FORMAT=XML".format(run)
 		# requests doesn't seem to pick up the SSL cookie...
 		# html = requests.get(runinfo_url).text
 		runinfo_filename = "{}/runinfo/{}.dat".format(cache_directory, run)
 		if not os.path.exists(runinfo_filename) or overwrite_runinfo_cache:
-			runinfo_command = "wget {} -o {}".format(runinfo_url, runinfo_filename)
+			runinfo_command = "wget '{}' -O {} --no-check-certificate".format(runinfo_url, runinfo_filename)
 			print runinfo_command
 			os.system(runinfo_command)
 		html = ""
+		print "[debug] Runinfo saved to {}".format(runinfo_filename)
 		with open(runinfo_filename) as runinfo_file:
 			for line in runinfo_file:
 				html += line
 
 		# Parsing example from https://stackoverflow.com/questions/23377533/python-beautifulsoup-parsing-table
 		table_data = {}
+		#print html
+		soup = BeautifulSoup(html)
+		#print soup
 		table = soup.find('table', attrs={'class':'example'})
+		print table
 		table_body = table.find('tbody')
 
 		rows = table_body.find_all('tr')

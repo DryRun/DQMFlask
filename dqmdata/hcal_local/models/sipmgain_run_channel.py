@@ -1,7 +1,10 @@
 import sys
 from dqmdata import db
 from dqmdata.hcal_local.dqmio import load_dqm_object
-from dqmdata.hcal_local.models.common import *
+from dqmdata.common.models.channel import Channel
+from dqmdata.common.models.serializable import Serializable
+from dqmdata.common.models.local_run import LocalRun, add_run
+from dqmdata.common.utilities import *
 
 # SiPM gain
 # Method A: 3 gaussian fit, no kernel smoothing
