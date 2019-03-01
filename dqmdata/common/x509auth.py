@@ -3,7 +3,6 @@ import sys
 import urllib.request
 import http.client
 import json
-from ROOT import *
 from array import *
 
 serverurl = 'https://cmsweb.cern.ch/dqm/offline'
