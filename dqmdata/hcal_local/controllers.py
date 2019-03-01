@@ -200,12 +200,13 @@ def mapcount(filename):
 @click.option('--version')
 @click.option('--path')
 def process_emap(version, path):
-	from models.channel import Channel
+	print("process_emap({}, {})".format(version, path))
+	from hcal_local.models.channel import Channel
 	nlines = mapcount(path)
 	print_every = int(math.floor(nlines / 20))
 	emap = open(path, 'r')
 	counter = 0
-	for line in emap:
+	for index, line in enumerate(emap):
 		if counter % print_every == 0:
 			print("On line {}/{}".format(counter, nlines))
 		counter += 1
@@ -239,7 +240,8 @@ def process_emap(version, path):
 			spigot        = spigot,
 			fiber         = fiber,
 			fiber_channel = fiber_channel,
-			emap_version  = version
+			emap_version  = version,
+			index         = index
 			)
 		db.session.add(channel)
 		if counter % 200:
