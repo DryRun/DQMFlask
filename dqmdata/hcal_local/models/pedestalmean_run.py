@@ -2,8 +2,8 @@ import sys
 from dqmdata import db
 from dqmdata.hcal_local.dqmio import load_dqm_object
 from dqmdata.common.models.serializable import Serializable
-from dqmdata.common.models.channel import Channel
 from dqmdata.common.models.local_run import LocalRun, add_run
+from dqmdata.hcal_local.models.channel import Channel
 from dqmdata.common.utilities import *
 from sqlalchemy.dialects import postgresql
 
