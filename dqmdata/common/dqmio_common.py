@@ -2,7 +2,7 @@
 import pickle
 import re
 import urllib.request
-from x509auth import *
+from dqmdata.common.x509auth import *
 from dqmdata.common.localization import cache_directory
 from ROOT import TBufferFile, TH1F, TProfile, TProfile2D, TH1F, TH2F, TH1
 
