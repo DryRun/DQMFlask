@@ -41,7 +41,7 @@ def process_emap(version, path):
 	counter = 0
 	for line in emap:
 		if counter % print_every == 0:
-			print "On line {}/{}".format(counter, nlines)
+			print("On line {}/{}".format(counter, nlines))
 		counter += 1
 		if line[0] == "#":
 			continue

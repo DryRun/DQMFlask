@@ -59,11 +59,11 @@ def x509_params():
 			cert_file = x509_path
 
 	if not key_file or not os.path.exists(key_file):
-		print >>sys.stderr, "no certificate private key file found"
+		print("no certificate private key file found")
 		sys.exit(1)
 
 	if not cert_file or not os.path.exists(cert_file):
-		print >>sys.stderr, "no certificate public key file found"
+		print("no certificate public key file found")
 		sys.exit(1)
 
 	#sys.stderr.write("Using SSL private key %s\n" % key_file)

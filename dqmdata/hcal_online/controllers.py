@@ -60,11 +60,11 @@ def get_data(quantity_name, view_args):
 	if view_args.filter_subdet:
 		q_channels = q_channels.filter(Channel.subdet.in_(view_args.filter_subdet))
 	q_channels = q_channels.limit(view_args.max_channels)
-	print "[get_data] Channel query returned {} channels".format(q_channels.count())
+	print("[get_data] Channel query returned {} channels".format(q_channels.count()))
 
 	return_data = []
 	if view_args.averaging_method:
-		print "ERROR : Averaging not yet implemented! Returning nothing."
+		print("ERROR : Averaging not yet implemented! Returning nothing.")
 		return return_data
 	else:
 		for channel in q_channels.all():

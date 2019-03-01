@@ -63,11 +63,11 @@ def get_data(quantity_name, view_args):
 	q_channels.order_by(Channel.subdet.desc(), Channel.depth.desc(), Channel.ieta.desc(), Channel.iphi.desc())
 	q_channels = q_channels.limit(view_args.max_channels)
 
-	print "[get_data] Channel query returned {} channels".format(q_channels.count())
+	print("[get_data] Channel query returned {} channels".format(q_channels.count()))
 
 	return_data = []
 	if view_args.averaging_method:
-		print "ERROR : Averaging not yet implemented! Returning nothing."
+		print("ERROR : Averaging not yet implemented! Returning nothing.")
 		return return_data
 	else:
 		for channel in q_channels.all():
@@ -115,7 +115,7 @@ def get(quantity_name, max_entries=100, max_channels=100):
 	if "subdet" in request.args:
 		q_channels = q_channels.filter(Channel.subdet.in_(request.args.get("subdet").split(",")))
 	q_channels = q_channels.limit(max_channels)
-	print "[get] Query returned {} channels".format(q_channels.count())
+	print("[get] Query returned {} channels".format(q_channels.count()))
 
 	return_data = []
 	for channel in q_channels.all():

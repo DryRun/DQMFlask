@@ -12,10 +12,10 @@ def add_run(run, overwrite=False, test=False ):
 	q = OnlineRun.query.filter(OnlineRun.run==run)
 	if q.count() > 0:
 		if not overwrite:
-			print "[OnlineRun::add_run] WARNING : Run {} already exists in db. Use overwrite=True to overwrite.".format(run)
+			print("[OnlineRun::add_run] WARNING : Run {} already exists in db. Use overwrite=True to overwrite.".format(run))
 			return
 		else:
-			print "[OnlineRun::add_run] INFO : Deleting run {} from db.".format(run)
+			print("[OnlineRun::add_run] INFO : Deleting run {} from db.".format(run))
 			for entry in q.all():
 				db.session.delete(entry)
 			db.session.commit()
@@ -47,7 +47,7 @@ def add_run(run, overwrite=False, test=False ):
 		db.session.add(this_run)
 		db.session.commit()
 	else:
-		print this_run
+		print(this_run)
 
 
 class OnlineRun(db.Model):
@@ -74,21 +74,21 @@ class OnlineRun(db.Model):
 		runinfo_filename = "{}/runinfo/{}.dat".format(cache_directory, run)
 		if not os.path.exists(runinfo_filename) or overwrite_runinfo_cache:
 			runinfo_command = "wget '{}' -O {} --no-check-certificate".format(runinfo_url, runinfo_filename)
-			print runinfo_command
+			print(runinfo_command)
 			os.system(runinfo_command)
 		html = ""
-		print "[debug] Runinfo saved to {}".format(runinfo_filename)
+		print("[debug] Runinfo saved to {}".format(runinfo_filename))
 		with open(runinfo_filename) as runinfo_file:
 			for line in runinfo_file:
 				html += line
 
 		# Parsing example from https://stackoverflow.com/questions/23377533/python-beautifulsoup-parsing-table
 		table_data = {}
-		#print html
+		#print(html)
 		soup = BeautifulSoup(html)
-		#print soup
+		#print(soup)
 		table = soup.find('table', attrs={'class':'example'})
-		print table
+		print(table)
 		table_body = table.find('tbody')
 
 		rows = table_body.find_all('tr')
@@ -107,7 +107,7 @@ class OnlineRun(db.Model):
 				start_time.strftime(r"%m/%d/%y\ %h:%m:%s"),
 				brilcalc_filename
 			)
-			print brilcalc_command
+			print(brilcalc_command)
 			os.system(brilcalc_command)
 		summary_line = subprocess.check_output(['tail', '-1', brilcalc_filename])
 		# Summary line format:

@@ -33,7 +33,7 @@ def download_dqm_json_object(url, project, run, object_name):
 	X509CertAuth.ssl_key_file, X509CertAuth.ssl_cert_file = x509_params()
 	if not "?rootcontent=1" in url:
 		url += "?rootcontent=1"
-	print "[download_dqm_json_object] INFO : Downloading ROOT JSON from {} to {}".format(url, cached_path)
+	print("[download_dqm_json_object] INFO : Downloading ROOT JSON from {} to {}".format(url, cached_path))
 	datareq = urllib2.Request(url)
 	datareq.add_header('User-agent', ident)
 	# Get data

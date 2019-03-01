@@ -17,7 +17,7 @@ def load_dqm_object(run, dataset, rootpath, force_download=False):
 		url = "https://cmsweb.cern.ch/dqm/hcal-online/data/json/archive/{}/{}/{}".format(run, dataset, rootpath)
 		download_dqm_json_object(url, "hcal_local", run, object_name)
 	else:
-		print "[load_dqm_object] INFO : Loading cached DQM objects from {}".format(cachepath)
+		print("[load_dqm_object] INFO : Loading cached DQM objects from {}".format(cachepath))
 	with open(cachepath, 'r') as f:
 		json_data = pickle.load(f)
 	root_data = convert_json_to_root(json_data)
@@ -32,5 +32,5 @@ def load_sipm_gains(run):
 
 if __name__ == "__main__":
 	# Test loading DQM object
-	print load_dqm_object(311043, "PEDESTAL/Commissioning2018/DQMIO", "Hcal/PedestalTask/Mean/depth")
-	print "Done."  
+	print(load_dqm_object(311043, "PEDESTAL/Commissioning2018/DQMIO", "Hcal/PedestalTask/Mean/depth"))
+	print("Done."  )

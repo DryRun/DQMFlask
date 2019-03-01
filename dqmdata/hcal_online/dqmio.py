@@ -18,7 +18,7 @@ def load_dqm_object(run, rootpath, dataset="Global/Online/ALL", force_download=F
 		url = "https://cmsweb.cern.ch/dqm/online/data/json/archive/{}/{}/{}".format(run, dataset, rootpath)
 		download_dqm_json_object(url, "hcal_online", run, object_name)
 	else:
-		print "[load_dqm_object] INFO : Loading cached DQM objects from {}".format(cachepath)
+		print("[load_dqm_object] INFO : Loading cached DQM objects from {}".format(cachepath))
 	with open(cachepath, 'r') as f:
 		json_data = pickle.load(f)
 	root_data = convert_json_to_root(json_data)
@@ -27,5 +27,5 @@ def load_dqm_object(run, rootpath, dataset="Global/Online/ALL", force_download=F
 
 if __name__ == "__main__":
 	# Test loading DQM object
-	print load_dqm_object(318733, "Hcal/DigiTask/LETDCTime/depth")
-	print "Done."  
+	print(load_dqm_object(318733, "Hcal/DigiTask/LETDCTime/depth"))
+	print("Done.")

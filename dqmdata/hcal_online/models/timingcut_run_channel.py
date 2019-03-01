@@ -19,7 +19,7 @@ class TimingCut_Run_Channel(Serializable, db.Model):
 
 	# Extract data from DQM histogram
 	def extract(self, run, emap_version="2018", overwrite=False):
-		print "[TimingCut_Run_Channel::extract] Extracting for run {}".format(run)
+		print("[TimingCut_Run_Channel::extract] Extracting for run {}".format(run))
 
 		# Check that this run is not already in DB
 		if not check_overwrite(TimingCut_Run_Channel, run, emap_version, overwrite=overwrite):
@@ -31,9 +31,9 @@ class TimingCut_Run_Channel(Serializable, db.Model):
 		# Get data
 		dqm_data = load_dqm_object(run, "Hcal/DigiTask/TimingCut/depth")
 		if len(dqm_data) == 0:
-			print "[TimingCut_Run_Channel::extract] ERROR : DQM data is empty! Skipping."
+			print("[TimingCut_Run_Channel::extract] ERROR : DQM data is empty! Skipping.")
 			return 
-		#print dqm_data
+		#print(dqm_data)
 
 		# Get histograms
 		hist_pedestal_mean = {}
@@ -48,6 +48,6 @@ class TimingCut_Run_Channel(Serializable, db.Model):
 			if this_pedestal_mean == 0: # Zero suppress. This plot monitors drifts, not errors.
 				continue
 			this_reading = TimingCut_Run_Channel(run=run, value=this_pedestal_mean, channel_id=channel.id)
-			#print this_reading
+			#print(this_reading)
 			db.session.add(this_reading)
 		db.session.commit()
