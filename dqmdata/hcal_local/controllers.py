@@ -200,7 +200,6 @@ def mapcount(filename):
 @click.option('--version')
 @click.option('--path')
 def process_emap(version, path):
-	print "process_emap"
 	from models.channel import Channel
 	nlines = mapcount(path)
 	print_every = int(math.floor(nlines / 20))
