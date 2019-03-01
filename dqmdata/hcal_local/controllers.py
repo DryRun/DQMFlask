@@ -8,7 +8,7 @@ from dqmdata import db, app
 from dqmdata.hcal_local.models.pedestalmean_run_channel import PedestalMean_Run_Channel
 from dqmdata.hcal_local.models.pedestalrms_run_channel import PedestalRMS_Run_Channel
 from dqmdata.hcal_local.models.sipmgaina_run_channel import SiPMGainA_Run_Channel
-from dqmdata.common.models.channel import Channel
+from dqmdata.hcal_local.models.channel import Channel
 
 # Support jsonp
 import json
