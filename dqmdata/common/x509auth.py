@@ -1,4 +1,8 @@
-import os, sys, urllib2, httplib, json
+import os
+import sys
+import urllib.request
+import httplib
+import json
 from ROOT import *
 from array import *
 
@@ -15,7 +19,7 @@ class X509CertAuth(HTTPS):
 						cert_file = X509CertAuth.ssl_cert_file,
 						**kwargs)
 
-class X509CertOpen(urllib2.AbstractHTTPHandler):
+class X509CertOpen(urllib.request.AbstractHTTPHandler):
 	def default_open(self, req):
 		return self.do_open(X509CertAuth, req)
 
