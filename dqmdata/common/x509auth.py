@@ -1,14 +1,14 @@
 import os
 import sys
 import urllib.request
-import httplib
+import http.client
 import json
 from ROOT import *
 from array import *
 
 serverurl = 'https://cmsweb.cern.ch/dqm/offline'
 ident = "DQMToJson/1.0 python/%d.%d.%d" % sys.version_info[:3]
-HTTPS = httplib.HTTPSConnection
+HTTPS = http.client.HTTPSConnection
 
 class X509CertAuth(HTTPS):
 	ssl_key_file = None
