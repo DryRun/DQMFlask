@@ -1,7 +1,7 @@
 # Functions for processing DQM files
 import pickle
 import re
-import urllib2
+import urllib.request
 from x509auth import *
 from dqmdata.common.localization import cache_directory
 from ROOT import TBufferFile, TH1F, TProfile, TProfile2D, TH1F, TH2F, TH1
@@ -34,10 +34,10 @@ def download_dqm_json_object(url, project, run, object_name):
 	if not "?rootcontent=1" in url:
 		url += "?rootcontent=1"
 	print("[download_dqm_json_object] INFO : Downloading ROOT JSON from {} to {}".format(url, cached_path))
-	datareq = urllib2.Request(url)
+	datareq = urllib.request.Request(url)
 	datareq.add_header('User-agent', ident)
 	# Get data
-	data = eval(re.sub(r"\bnan\b", "0", urllib2.build_opener(X509CertOpen()).open(datareq).read()),
+	data = eval(re.sub(r"\bnan\b", "0", urllib.request.build_opener(X509CertOpen()).open(datareq).read()),
 			   { "__builtins__": None }, {})
 	# Save data to a pickle
 	os.system("mkdir -pv {}".format(os.path.dirname(cached_path)))
@@ -62,9 +62,9 @@ def get_dqm_root_cachepath(run, server, dataset, folder):
 # - dataset=
 def download_dqm_root(run, server, dataset, task):
 	X509CertAuth.ssl_key_file, X509CertAuth.ssl_cert_file = x509_params()
-	datareq = urllib2.Request('{}/data/browse/ROOT/{}/{}/000{}xx/DQM_V0001_R000{}__{}__{}__DQMIO.root'.format(server, dataset, task, int(math.floor(run/100)), run, task, dataset))
+	datareq = urllib.request.Request('{}/data/browse/ROOT/{}/{}/000{}xx/DQM_V0001_R000{}__{}__{}__DQMIO.root'.format(server, dataset, task, int(math.floor(run/100)), run, task, dataset))
 	datareq.add_header('User-agent', ident)
-	data = urllib2.build_opener(X509CertOpen()).open(datareq)
+	data = urllib.request.build_opener(X509CertOpen()).open(datareq)
 	cached_path = get_dqm_root_cachepath(run, server, dataset, rootpath)
 	with open(cached_path, 'w') as f:
 		f.write(data)
