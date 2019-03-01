@@ -10,7 +10,7 @@ def emap_delete(emap_version):
 
 def emap_process(emap_version, emap_path):
 	emap = open(emap_path, 'r')
-	for line in emap:
+	for index, line in enumerate(emap):
 		if line[0] == "#":
 			continue
 		if len(line.split()) < 10:
@@ -38,7 +38,8 @@ def emap_process(emap_version, emap_path):
 			spigot        = spigot,
 			fiber         = fiber,
 			fiber_channel = fiber_channel,
-			emap_version  = emap_version
+			emap_version  = emap_version,
+			index         = index
 			)
 		channel.save()
 
