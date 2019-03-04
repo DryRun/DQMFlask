@@ -6,6 +6,7 @@ from flask_cli import with_appcontext
 @click.option('--version')
 @click.option('--path')
 def process_emap(version, path):
+	print "Bad!"
 	from models import Channel
 	emap = open(path, 'r')
 	for line in emap:
