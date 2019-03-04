@@ -182,8 +182,6 @@ def delete(quantity, run):
 		counter += 1
 	db.session.commit()
 
-app.cli.add_command(hcal_local_cli)
-
 
 # mapcount: count lines in a file
 import mmap
@@ -196,7 +194,7 @@ def mapcount(filename):
         lines += 1
     return lines
 
-@app.cli.command(with_appcontext=True)
+@hcal_local_cli.command(with_appcontext=True)
 @click.option('--version')
 @click.option('--path')
 def process_emap(version, path):
@@ -248,7 +246,7 @@ def process_emap(version, path):
 			db.session.flush()
 	db.session.commit()
 
-@app.cli.command(with_appcontext=True)
+@hcal_local_cli.command(with_appcontext=True)
 @click.option('--version')
 def delete_emap(version):
 	counter = 0
@@ -259,3 +257,5 @@ def delete_emap(version):
 		counter += 1
 	db.session.commit()
 
+
+app.cli.add_command(hcal_local_cli)
