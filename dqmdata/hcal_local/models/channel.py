@@ -20,7 +20,7 @@ class Channel(Serializable, db.Model):
 	emap_version  = db.Column(db.String(8), nullable=False)
 
 	# Backrefs
-	pedestal_mean_run_channel = db.relationship('PedestalMean_Run', backref='channel', lazy='dynamic')
+	pedestal_mean_run_channel = db.relationship('PedestalMean_Run_Channel', backref='channel', lazy='dynamic')
 	#pedestal_rms_run_channel  = db.relationship('PedestalRMS_Run_Channel', backref='channel', lazy='dynamic')
 	#sipmgaina_run_channel     = db.relationship('SiPMGainA_Run_Channel', backref='channel', lazy='dynamic') 
 	#tdctime_run_channel       = db.relationship('TDCTime_Run_Channel', backref='channel', lazy='dynamic')
