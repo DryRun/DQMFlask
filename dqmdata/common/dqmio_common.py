@@ -38,7 +38,7 @@ def download_dqm_json_object(url, project, run, object_name):
 	datareq = urllib.request.Request(url)
 	datareq.add_header('User-agent', ident)
 	# Get data
-	data = eval(re.sub(r"\bnan\b", "0", urllib.request.build_opener(X509CertOpen()).open(datareq).read()),
+	data = eval(re.sub(r"\bnan\b", "0", urllib.request.build_opener(X509CertOpen()).open(datareq).read().decode('utf-8')),
 			   { "__builtins__": None }, {})
 	# Save data to a pickle
 	os.system("mkdir -pv {}".format(os.path.dirname(cached_path)))
