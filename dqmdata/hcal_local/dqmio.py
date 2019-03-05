@@ -19,7 +19,7 @@ def load_dqm_object(run, dataset, rootpath, force_download=False):
 	else:
 		print("[load_dqm_object] INFO : Loading cached DQM objects from {}".format(cachepath))
 	with open(cachepath, 'rb') as f:
-		json_data = pickle.load(f)
+		json_data = pickle.load(f, encoding="latin1")
 	root_data = convert_json_to_root(json_data)
 
 	return root_data
