@@ -38,7 +38,7 @@ def download_dqm_json_object(url, project, run, object_name):
 	datareq = urllib.request.Request(url)
 	datareq.add_header('User-agent', ident)
 	# Get data
-	with urllib.request.build_opener(X509CertOpen()).open(datareq) as reponse:
+	with urllib.request.build_opener(X509CertOpen()).open(datareq) as response:
 		encoding = response.info().get_param('charset', 'utf8')
 		data = eval(re.sub(r"\bnan\b", "0", response.read().decode(encoding)),
 				   { "__builtins__": None }, {})
