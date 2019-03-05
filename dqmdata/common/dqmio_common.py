@@ -4,10 +4,10 @@ import re
 import urllib.request
 from dqmdata.common.x509auth import *
 from dqmdata.common.localization import cache_directory
-from ROOT import TBufferFile, TH1F, TProfile, TProfile2D, TH1F, TH2F, TH1, PyConfig
-PyConfig.IgnoreCommandLineOptions = True
+#from ROOT import TBufferFile, TH1F, TProfile, TProfile2D, TH1F, TH2F, TH1, PyConfig
 
 def convert_json_to_root(json_data):
+	from ROOT import TBufferFile
 	return_dict = {}
 	for idx, item in enumerate(json_data['contents']):
 		if "obj" in item.keys() and "rootobj" in item.keys():
