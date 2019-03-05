@@ -199,7 +199,7 @@ def mapcount(filename):
 @click.option('--path')
 def process_emap(version, path):
 	print("process_emap({}, {})".format(version, path))
-	from hcal_local.models.channel import Channel
+	#from models.channel import Channel
 	nlines = mapcount(path)
 	print_every = int(math.floor(nlines / 20))
 	emap = open(path, 'r')
