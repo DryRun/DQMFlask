@@ -7,7 +7,7 @@ from dqmdata.common.localization import cache_directory
 #from ROOT import TBufferFile, TH1F, TProfile, TProfile2D, TH1F, TH2F, TH1, PyConfig
 
 def convert_json_to_root(json_data):
-	from ROOT import TBufferFile
+	from ROOT import TBufferFile, TH1F, TProfile, TProfile2D, TH1F, TH2F, TH1
 	return_dict = {}
 	for idx, item in enumerate(json_data['contents']):
 		if "obj" in item.keys() and "rootobj" in item.keys():
@@ -73,6 +73,7 @@ def download_dqm_root(run, server, dataset, task):
 		f.write(data)
 
 def get_root_objects(run, server, dataset, folder, force_download=False):
+	from ROOT import TBufferFile, TH1F, TProfile, TProfile2D, TH1F, TH2F, TH1
 	cached_path = get_dqm_file_cachepath(run, server, dataset, folder)
 	if not os.path.file_exists(cached_path) or force_download:
 		download_dqm_file(run, server, dataset, folder)
