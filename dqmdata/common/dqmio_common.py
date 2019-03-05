@@ -40,7 +40,7 @@ def download_dqm_json_object(url, project, run, object_name):
 	# Get data
 	with urllib.request.build_opener(X509CertOpen()).open(datareq) as reponse:
 		encoding = response.info().get_param('charset', 'utf8')
-		data = eval(re.sub(r"\bnan\b", "0", .read().decode(encoding)),
+		data = eval(re.sub(r"\bnan\b", "0", response.read().decode(encoding)),
 				   { "__builtins__": None }, {})
 	# Save data to a pickle
 	os.system("mkdir -pv {}".format(os.path.dirname(cached_path)))
