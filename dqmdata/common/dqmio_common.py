@@ -4,7 +4,8 @@ import re
 import urllib.request
 from dqmdata.common.x509auth import *
 from dqmdata.common.localization import cache_directory
-from ROOT import TBufferFile, TH1F, TProfile, TProfile2D, TH1F, TH2F, TH1
+#from ROOT import TBufferFile, TH1F, TProfile, TProfile2D, TH1F, TH2F, TH1
+#ROOT.PyConfig.IgnoreCommandLineOptions = True
 
 def convert_json_to_root(json_data):
 	return_dict = {}
