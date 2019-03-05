@@ -5,8 +5,7 @@ from dqmdata.common.models.serializable import Serializable
 # Utility models
 class Channel(Serializable, db.Model):
 	__tablename__ = "channel"
-	id            = db.Column(db.Integer, primary_key=True)
-	index         = db.Column(db.Integer, nullable=False)
+	id            = db.Column(db.BigInteger, primary_key=True)
 	subdet        = db.Column(db.String(8), nullable=False)
 	ieta          = db.Column(db.SmallInteger, nullable=False)
 	iphi          = db.Column(db.SmallInteger, nullable=False)
@@ -26,7 +25,7 @@ class Channel(Serializable, db.Model):
 	#tdctime_run_channel       = db.relationship('TDCTime_Run_Channel', backref='channel', lazy='dynamic')
 	#timingcut_run_channel     = db.relationship('TimingCut_Run_Channel', backref='channel', lazy='dynamic')
 
-	def __init__(self, subdet, ieta, iphi, depth, crate, slot, dcc, spigot, fiber, fiber_channel, emap_version, index):
+	def __init__(self, subdet, ieta, iphi, depth, crate, slot, dcc, spigot, fiber, fiber_channel, emap_version):
 		self.subdet        = subdet
 		self.ieta          = ieta
 		self.iphi          = iphi
@@ -38,11 +37,10 @@ class Channel(Serializable, db.Model):
 		self.fiber         = fiber
 		self.fiber_channel = fiber_channel
 		self.emap_version  = emap_version
-		self.index         = index
 		self.id            = hash((subdet, str(ieta), iphi, depth, emap_version)) # NOTE: python has the unfortunate feature hash(-1) == hash(-2). So here, we convert ieta to a string first.
 
 	def __repr__(self):
-		return "Index {} | Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.index, self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
+		return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
 
 	# Short string for plot legends
 	def get_label(self):
@@ -50,7 +48,7 @@ class Channel(Serializable, db.Model):
 
 	@property
 	def as_dict(self):
-		return {"subdet":self.subdet, "ieta":self.ieta, "iphi":self.iphi, "depth":self.depth, "index":self.index}
+		return {"subdet":self.subdet, "ieta":self.ieta, "iphi":self.iphi, "depth":self.depth}
 
 	# Backref
 	#backref_dict = {

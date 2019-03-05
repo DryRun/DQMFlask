@@ -204,7 +204,7 @@ def process_emap(version, path):
 	print_every = int(math.floor(nlines / 20))
 	emap = open(path, 'r')
 	counter = 0
-	for index, line in enumerate(emap):
+	for line in emap:
 		if counter % print_every == 0:
 			print("On line {}/{}".format(counter, nlines))
 		counter += 1
@@ -239,7 +239,6 @@ def process_emap(version, path):
 			fiber         = fiber,
 			fiber_channel = fiber_channel,
 			emap_version  = version,
-			index         = index
 			)
 		db.session.add(channel)
 		if counter % 200:
