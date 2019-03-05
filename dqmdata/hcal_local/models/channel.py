@@ -26,7 +26,7 @@ class Channel(Serializable, db.Model):
 	#tdctime_run_channel       = db.relationship('TDCTime_Run_Channel', backref='channel', lazy='dynamic')
 	#timingcut_run_channel     = db.relationship('TimingCut_Run_Channel', backref='channel', lazy='dynamic')
 
-	def __init__(self, subdet, ieta, iphi, depth, crate, slot, dcc, spigot, fiber, fiber_channel, emap_version):
+	def __init__(self, subdet, ieta, iphi, depth, crate, slot, dcc, spigot, fiber, fiber_channel, emap_version, index):
 		self.subdet        = subdet
 		self.ieta          = ieta
 		self.iphi          = iphi
