@@ -12,7 +12,7 @@ def convert_json_to_root(json_data):
 	for idx, item in enumerate(json_data['contents']):
 		if "obj" in item.keys() and "rootobj" in item.keys():
 			bit_array = array('B')
-			bit_array.fromstring(item['rootobj'].decode('hex'))
+			bit_array.fromstring(bytes.fromhex(item['rootobj']).decode('ascii'))
 			tbuffer = TBufferFile(TBufferFile.kRead, len(bit_array), bit_array, False)
 			rootType = item['properties']['type']
 			if rootType == 'TPROF': 
