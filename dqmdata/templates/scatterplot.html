@@ -7,7 +7,7 @@
 	<script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
 	<script src="https://code.highcharts.com/modules/export-data.js"></script>
 	<!--<script src="http://code.highcharts.com/modules/exporting.js"></script>-->
-	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+	<div id="container" style="min-width: 310px; height: 1000px; margin: 0 auto"></div>
 	 <script>
 		$(document).ready(function() {
 			var options = {
@@ -19,24 +19,24 @@
 					useGPUTranslations: true,
 					usePreAllocated: true
 				},
-				xAxis: {
-					min: 314000,
-					max: 325000,
-					gridLineWidth: 1,
-					title: {
-						text: "Run"
-					}
-				},
-				yAxis: {
-					// Renders faster when we don't have to compute min and max
-					min: 50,
-					max: 75,
-					minPadding: 0,
-					maxPadding: 0,
-					title: {
-						text: "Average TDCTime [ns]"
-					}
-				},
+				//xAxis: {
+				//	min: 309000,
+				//	max: 325000,
+				//	gridLineWidth: 1,
+				//	title: {
+				//		text: "Run"
+				//	}
+				//},
+				//yAxis: {
+				//	// Renders faster when we don't have to compute min and max
+				//	min: 50,
+				//	max: 75,
+				//	minPadding: 0,
+				//	maxPadding: 0,
+				//	title: {
+				//		text: "Average TDCTime [ns]"
+				//	}
+				//},
 
 				title: {
 					text: '{{ title }}'
