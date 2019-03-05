@@ -10,7 +10,6 @@ PyConfig.IgnoreCommandLineOptions = True
 def convert_json_to_root(json_data):
 	return_dict = {}
 	for idx, item in enumerate(json_data['contents']):
-		print item.keys()
 		if "obj" in item.keys() and "rootobj" in item.keys():
 			bit_array = array('B')
 			bit_array.fromstring(bytes.fromhex(item['rootobj']))
