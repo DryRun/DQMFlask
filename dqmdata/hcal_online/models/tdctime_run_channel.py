@@ -10,7 +10,7 @@ class TDCTime_Run_Channel(Serializable, db.Model):
 	__tablename__ = 'tdctime_run_channel'
 	id            = db.Column(db.Integer, primary_key=True)
 	run           = db.Column(db.Integer, db.ForeignKey('online_run.run'), index=True)
-	channel_id    = db.Column(db.Integer, db.ForeignKey('channel.id'), index=True)
+	channel_id    = db.Column(db.BigInteger, db.ForeignKey('channel.id'), index=True)
 	value         = db.Column(db.Float)
 
 	def __repr__(self):
