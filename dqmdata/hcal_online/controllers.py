@@ -6,9 +6,10 @@ from dqmdata import db, app
 
 # Import models
 from dqmdata.hcal_online.models.tdctime_run_channel import TDCTime_Run_Channel
-from dqmdata.hcal_online.models.timingcut_run_channel import TimingCut_Run_Channel
-from dqmdata.common.models.channel import Channel
-from dqmdata.common.models.online_run import OnlineRun
+#from dqmdata.hcal_online.models.timingcut_run_channel import TimingCut_Run_Channel
+from dqmdata.hcal_local.models.channel import Channel
+#from dqmdata.common.models.channel import Channel
+#from dqmdata.common.models.online_run import OnlineRun
 
 # Support jsonp
 import json

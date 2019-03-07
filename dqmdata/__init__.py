@@ -20,7 +20,7 @@ migrate = Migrate(app, db)
 # Import a module / component using its blueprint handler variable (hcal_local)
 from dqmdata.common.controllers import common as common
 from dqmdata.hcal_local.controllers import hcal_local as hcal_local
-#from dqmdata.hcal_online.controllers import hcal_online as hcal_online
+from dqmdata.hcal_online.controllers import hcal_online as hcal_online
 
 app.register_blueprint(common)
 app.register_blueprint(hcal_local)
