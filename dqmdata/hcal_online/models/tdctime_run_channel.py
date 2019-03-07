@@ -2,7 +2,7 @@ import sys
 from dqmdata import db
 from dqmdata.hcal_online.dqmio import load_dqm_object
 from dqmdata.common.models.serializable import Serializable
-from dqmdata.common.models.channel import Channel
+from dqmdata.hcal_local.models.channel import Channel
 from dqmdata.common.models.online_run import OnlineRun, add_run
 from dqmdata.common.utilities import *
 
