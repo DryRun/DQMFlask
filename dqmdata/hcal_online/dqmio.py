@@ -19,7 +19,7 @@ def load_dqm_object(run, rootpath, dataset="Global/Online/ALL", force_download=F
 		download_dqm_json_object(url, "hcal_online", run, object_name)
 	else:
 		print("[load_dqm_object] INFO : Loading cached DQM objects from {}".format(cachepath))
-	with open(cachepath, 'r') as f:
+	with open(cachepath, 'rb') as f:
 		json_data = pickle.load(f)
 	root_data = convert_json_to_root(json_data)
 
