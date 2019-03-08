@@ -24,7 +24,7 @@ from dqmdata.hcal_online.controllers import hcal_online as hcal_online
 
 app.register_blueprint(common)
 app.register_blueprint(hcal_local)
-#app.register_blueprint(hcal_online)
+app.register_blueprint(hcal_online)
 # app.register_blueprint(xyz_module)
 # ..
 
