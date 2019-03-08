@@ -115,10 +115,11 @@ def get(quantity_name, max_entries=100, max_channels=100):
 	if "subdet" in request.args:
 		q_channels = q_channels.filter(Channel.subdet.in_(request.args.get("subdet").split(",")))
 	q_channels = q_channels.limit(max_channels)
+	q_channels = q_channels.order_by(Channel.subdet, Channel.ieta, Channel.iphi, Channel.depth)
 	print("[get] Query returned {} channels".format(q_channels.count()))
 
 	return_data = []
-	for channel in q_channels.all().order_by(Channel.subdet, Channel.ieta, Channel.iphi, Channel.depth):
+	for channel in q_channels.all():
 		# Return data key = legend entry for channel
 		q_data = getattr(channel, backrefs[quantity_name])
 		if "min_run" in request.args:

@@ -14,10 +14,6 @@ class PedestalMean_Run_Channel(Serializable, db.Model):
 	channel_id    = db.Column(db.BigInteger, db.ForeignKey('channel.id'), index=True)
 	value         = db.Column(db.Float, nullable=False)
 
-	def __repr__(self):
-		return "id {}, run {}".format(self.id, self.channel_id, self.run)
-		#return "Detector: ({}, {}, {}, {}) | Electronics: ({}, {}, {}, {}) | emap {}".format(self.subdet, self.ieta, self.iphi, self.depth, self.crate, self.slot, self.fiber, self.fiber_channel, self.emap_version)
-
 	# Extract data from DQM histogram
 	def extract(self, run, emap_version="2017J", overwrite=False):
 		print("[PedestalMean_Run_Channel::extract] Extracting for run {}".format(run))
@@ -55,3 +51,6 @@ class PedestalMean_Run_Channel(Serializable, db.Model):
 			this_reading = PedestalMean_Run_Channel(run=run, value=this_value, channel_id=channel.id)
 			db.session.add(this_reading)
 		db.session.commit()
+
+	def __repr__(self):
+		return "{} | {} | {} | {}".format(self.id, self.channel_id, self.run, self.value)
