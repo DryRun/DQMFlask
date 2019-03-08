@@ -114,8 +114,8 @@ def get(quantity_name, max_entries=100, max_channels=100):
 		q_channels = q_channels.filter(Channel.depth.in_(depth_list))
 	if "subdet" in request.args:
 		q_channels = q_channels.filter(Channel.subdet.in_(request.args.get("subdet").split(",")))
-	q_channels = q_channels.limit(max_channels)
 	q_channels = q_channels.order_by(Channel.subdet, Channel.ieta, Channel.iphi, Channel.depth)
+	q_channels = q_channels.limit(max_channels)
 	print("[get] Query returned {} channels".format(q_channels.count()))
 
 	return_data = []
